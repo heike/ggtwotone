@@ -1,0 +1,79 @@
+#' Dual-Tone Regression Line with Contrast-Aware Strokes
+#'
+#' Draws a regression line with perceptually distinct dual-stroke coloring for improved visibility.
+#'
+#' @param data A data frame containing the variables.
+#' @param mapping Aesthetic mapping, must include `x` and `y`.
+#' @param method Regression method to use (default is "lm").
+#' @param formula Model formula (default is `y ~ x`).
+#' @param base_color Base color to derive the dual-tone pair from.
+#' @param contrast Minimum contrast ratio to aim for (default is 4.5).
+#' @param method_contrast Contrast algorithm to use ("WCAG", "APCA", or "auto").
+#' @param linewidth Width of the line stroke (top stroke). Bottom stroke is drawn slightly thicker.
+#' @param show.legend Whether to show legend.
+#' @param ... Additional parameters passed to `geom_segment_dual()`.
+#'
+#' @return A `ggplot2` layer containing the dual-stroke regression line.
+#'
+#' @examples
+#' library(ggplot2)
+#' # Simple test with linear trend
+#' set.seed(42)
+#' df <- data.frame(x = 1:100, y = 0.5 * (1:100) + rnorm(100))
+#' ggplot(df, aes(x, y)) +
+#'   geom_point() +
+#'   geom_lm_dual(data = df, mapping = aes(x = x, y = y)) +
+#'   theme_minimal()
+#'
+#' # Over grayscale tiles
+#' x <- seq(1, 11, length.out = 100)
+#' y <- 0.5 * x + rnorm(100, 0, 0.3)
+#' df1 <- data.frame(x = x, y = y)
+#' tiles <- data.frame(
+#'   x = 1:11,
+#'   fill = c("#000000", "#1b1b1b", "#444444", "#777777", "#aaaaaa",
+#'            "#dddddd", "#D5D5D5", "#E5E5E5", "#F5F5F5", "#FAFAFA", "#FFFFFF")
+#' )
+#' tiles <- tiles |>
+#'   expand.grid(y = seq(0, 1, length.out = 100), x = tiles$x) |>
+#'   merge(tiles, by = "x")
+#' ggplot() +
+#'   geom_tile(data = tiles, aes(x = x, y = y, fill = fill), width = 1, height = 10) +
+#'   scale_fill_identity() +
+#'   geom_point(data = df1, aes(x = x, y = y), color = "purple", size = 2) +
+#'   geom_lm_dual(data = df1, mapping = aes(x = x, y = y)) +
+#'   theme_minimal()
+#' @export
+geom_lm_dual <- function(data, mapping, method = "lm", formula = y ~ x,
+                         base_color = "#777777", contrast = 4.5,
+                         method_contrast = "WCAG", ...,
+                         linewidth = 1, show.legend = NA) {
+
+  x_var <- rlang::as_name(mapping$x)
+  y_var <- rlang::as_name(mapping$y)
+
+  model <- lm(formula, data = data)
+  x_range <- range(data[[x_var]], na.rm = TRUE)
+  y_pred <- predict(model, newdata = data.frame(x = x_range))
+
+  cp <- adjust_contrast_pair(base_color, contrast = contrast, method = method_contrast)
+
+  reg_segment <- data.frame(
+    x = x_range[1],
+    y = y_pred[1],
+    xend = x_range[2],
+    yend = y_pred[2],
+    color1 = cp$light,
+    color2 = cp$dark
+  )
+
+  geom_segment_dual(
+    data = reg_segment,
+    aes(x = x, y = y, xend = xend, yend = yend,
+        color1 = color1, color2 = color2),
+    linewidth = linewidth,
+    inherit.aes = FALSE,
+    show.legend = show.legend,
+    ...
+  )
+}
