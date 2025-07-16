@@ -13,8 +13,9 @@ GeomSegmentDual <- ggplot2::ggproto("GeomSegmentDual", ggplot2::Geom,
                                                  arrow.fill = NULL, lineend = "butt", linejoin = "round",
                                                  na.rm = FALSE) {
 
-                             offset <- grid::convertHeight(unit(0.75 * .pt, "pt"), "npc", valueOnly = TRUE)
 
+                             offset <- grid::convertHeight(unit(0.75 * .pt, "pt"), "npc", valueOnly = TRUE)
+                            # browser()
                              data1 <- data  # top stroke
                              data2 <- data  # bottom stroke
                              data1$y    <- data1$y + offset
@@ -152,6 +153,7 @@ geom_segment_dual <- function(mapping = NULL, data = NULL,
       arrow = arrow,
       arrow.fill = arrow.fill,
       lineend = lineend,
+      linewidth = linewidth,
       linejoin = linejoin,
       na.rm = na.rm,
       ...
