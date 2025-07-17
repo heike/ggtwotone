@@ -17,6 +17,7 @@
 #'
 #' @examples
 #' library(ggplot2)
+#'
 #' # Simple test with linear trend
 #' set.seed(42)
 #' df <- data.frame(x = 1:100, y = 0.5 * (1:100) + rnorm(100))
@@ -29,19 +30,24 @@
 #' x <- seq(1, 11, length.out = 100)
 #' y <- 0.5 * x + rnorm(100, 0, 0.3)
 #' df1 <- data.frame(x = x, y = y)
-#' tiles <- data.frame(
+#'
+#' # Tile fill definitions
+#' fill_colors <- data.frame(
 #'   x = 1:11,
 #'   fill = c("#000000", "#1b1b1b", "#444444", "#777777", "#aaaaaa",
 #'            "#dddddd", "#D5D5D5", "#E5E5E5", "#F5F5F5", "#FAFAFA", "#FFFFFF")
 #' )
-#' tiles <- tiles |>
-#'   expand.grid(y = seq(0, 1, length.out = 100), x = tiles$x) |>
-#'   merge(tiles, by = "x")
+#'
+#' # Expand tile grid and join with fill colors
+#' tiles <- expand.grid(x = 1:11, y = seq(0, 1, length.out = 100)) |>
+#'   merge(fill_colors, by = "x")
+#'
 #' ggplot() +
 #'   geom_tile(data = tiles, aes(x = x, y = y, fill = fill), width = 1, height = 10) +
 #'   scale_fill_identity() +
 #'   geom_point(data = df1, aes(x = x, y = y), color = "purple", size = 2) +
 #'   geom_lm_dual(data = df1, mapping = aes(x = x, y = y)) +
+#'   coord_fixed() +
 #'   theme_minimal()
 #' @export
 geom_lm_dual <- function(data, mapping, method = "lm", formula = y ~ x,
@@ -54,7 +60,9 @@ geom_lm_dual <- function(data, mapping, method = "lm", formula = y ~ x,
 
   model <- lm(formula, data = data)
   x_range <- range(data[[x_var]], na.rm = TRUE)
-  y_pred <- predict(model, newdata = data.frame(x = x_range))
+  new_data <- data.frame(x = x_range)
+  names(new_data) <- x_var
+  y_pred <- predict(model, newdata = new_data)
 
   cp <- adjust_contrast_pair(base_color, contrast = contrast, method = method_contrast)
 
@@ -69,8 +77,9 @@ geom_lm_dual <- function(data, mapping, method = "lm", formula = y ~ x,
 
   geom_segment_dual(
     data = reg_segment,
-    aes(x = x, y = y, xend = xend, yend = yend,
-        color1 = color1, color2 = color2),
+    mapping = aes(x = x, y = y, xend = xend, yend = yend),
+    color1 = cp$light,
+    color2 = cp$dark,
     linewidth = linewidth,
     inherit.aes = FALSE,
     show.legend = show.legend,
