@@ -126,8 +126,9 @@ GeomSegmentDual <- ggplot2::ggproto("GeomSegmentDual", ggplot2::Geom,
 #'   scale_fill_identity() +
 #'   geom_segment_dual(
 #'     data = line_data,
-#'     aes(x = x, y = y, xend = xend, yend = yend,
-#'         colour1 = color1, colour2 = color2),
+#'     aes(x = x, y = y, xend = xend, yend = yend),
+#'     color1 = line_data$color1,
+#'     color2 = line_data$color2,
 #'     linewidth = 1,
 #'     inherit.aes = FALSE
 #'   ) +
@@ -141,15 +142,16 @@ GeomSegmentDual <- ggplot2::ggproto("GeomSegmentDual", ggplot2::Geom,
 #'   xend = c(2, 3, 4),
 #'   y = c(1, 2, 1),
 #'   yend = c(2, 1, 2),
-#'   colour1 = rep("white", 3),
-#'   colour2 = rep("black", 3),
+#'   color1 = rep("white", 3),
+#'   color2 = rep("black", 3),
 #'   group = factor(c("A", "B", "C"))
 #' )
 #'
 #' ggplot(df) +
 #'   geom_segment_dual(
-#'     aes(x = x, y = y, xend = xend, yend = yend,
-#'         group = group, colour1 = colour1, colour2 = colour2),
+#'     aes(x = x, y = y, xend = xend, yend = yend, group = group),
+#'     color1 = df$color1,
+#'     color2 = df$color2,
 #'     linewidth = 1,
 #'     arrow = arrow(length = unit(0.15, "inches"), type = "closed")
 #'   ) +
