@@ -6,7 +6,7 @@
 #' @param xlim Range of x-values to evaluate over (numeric vector of length 2).
 #' @param n Number of segments to compute (default: 201).
 #' @param curvature,angle,ncp Passed to underlying `geom_curve_dual` segments.
-#' @param color Top stroke color (typically light).
+#' @param color1 Top stroke color (typically light).
 #' @param color2 Bottom stroke color (typically dark). If NULL, will be auto-computed for contrast.
 #' @param background Background color used for contrast calculation (default: `"#000000"`).
 #' @param contrast_method Either "apca", "wcag", or "auto".
@@ -28,7 +28,7 @@
 #'   geom_curve_dual_function(
 #'     fun = dnorm,
 #'     xlim = c(-5, 5),
-#'     color  = pair1$light,
+#'     color1  = pair1$light,
 #'     color2 = pair1$dark,
 #'     offset = 0.003,
 #'     linewidth = 1
@@ -37,10 +37,10 @@
 #'     fun = dt,
 #'     args = list(df = 1),
 #'     xlim = c(-5, 5),
-#'     color  = pair2$light,
+#'     color1  = pair2$light,
 #'     color2 = pair2$dark,
 #'     offset = 0.003,
-#'     linewidth = 1
+#'     linewidth = 2
 #'   ) +
 #'   theme_dark()
 #'
@@ -51,7 +51,7 @@ geom_curve_dual_function <- function(fun,
                                      curvature = 0,
                                      angle = 90,
                                      ncp = 20,
-                                     color = "#FFFFFF",
+                                     color1 = "#FFFFFF",
                                      color2 = NULL,
                                      background = "#000000",
                                      contrast_method = "APCA",
@@ -90,8 +90,8 @@ geom_curve_dual_function <- function(fun,
   # Remove any rows with NA or Inf (just in case)
   data <- tidyr::drop_na(data)
 
-  if (!is.null(color) && is.null(color2)) {
-    pair <- adjust_contrast_pair(color, background = background, method = contrast_method, quiet = TRUE)
+  if (!is.null(color1) && is.null(color2)) {
+    pair <- adjust_contrast_pair(color1, background = background, method = contrast_method, quiet = TRUE)
     color2 <- pair$dark
   }
 
@@ -101,7 +101,7 @@ geom_curve_dual_function <- function(fun,
     curvature = curvature,
     angle = angle,
     ncp = ncp,
-    color = color,
+    color1 = color1,
     color2 = color2,
     offset = offset,
     linewidth = linewidth,

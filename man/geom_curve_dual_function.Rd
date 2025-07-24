@@ -11,7 +11,7 @@ geom_curve_dual_function(
   curvature = 0,
   angle = 90,
   ncp = 20,
-  color = "#FFFFFF",
+  color1 = "#FFFFFF",
   color2 = NULL,
   background = "#000000",
   contrast_method = "APCA",
@@ -30,7 +30,7 @@ geom_curve_dual_function(
 
 \item{curvature, angle, ncp}{Passed to underlying \code{geom_curve_dual} segments.}
 
-\item{color}{Top stroke color (typically light).}
+\item{color1}{Top stroke color (typically light).}
 
 \item{color2}{Bottom stroke color (typically dark). If NULL, will be auto-computed for contrast.}
 
@@ -61,7 +61,7 @@ ggplot() +
   geom_curve_dual_function(
     fun = dnorm,
     xlim = c(-5, 5),
-    color  = pair1$light,
+    color1  = pair1$light,
     color2 = pair1$dark,
     offset = 0.003,
     linewidth = 1
@@ -70,10 +70,10 @@ ggplot() +
     fun = dt,
     args = list(df = 1),
     xlim = c(-5, 5),
-    color  = pair2$light,
+    color1  = pair2$light,
     color2 = pair2$dark,
     offset = 0.003,
-    linewidth = 1
+    linewidth = 2
   ) +
   theme_dark()
 
