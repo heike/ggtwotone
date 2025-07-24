@@ -31,7 +31,7 @@
 #'   color1 = "#EEEEEE",
 #'   color2 = "#222222",
 #'   offset = 0.004,
-#'   linewidth = 1.2,
+#'   linewidth = 1,
 #'   smooth = TRUE
 #'   ) +
 #'   theme_dark()
@@ -46,7 +46,7 @@
 #'     color1  = pair1$light,
 #'     color2 = pair1$dark,
 #'     offset = 0.003,
-#'     linewidth = 1.5,
+#'     linewidth = 1,
 #'     smooth = TRUE
 #'   ) +
 #'   geom_curve_dual_function(
@@ -56,7 +56,7 @@
 #'     color1  = pair2$light,
 #'     color2 = pair2$dark,
 #'     offset = 0.003,
-#'     linewidth = 1.5,
+#'     linewidth = 1,
 #'     smooth = TRUE
 #'   ) +
 #'   theme_dark()
