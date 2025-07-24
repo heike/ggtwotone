@@ -15,9 +15,10 @@ geom_curve_dual_function(
   color2 = NULL,
   background = "#000000",
   contrast_method = "APCA",
-  offset = 0.002,
+  offset = 0.003,
   linewidth = 1.2,
   args = list(),
+  smooth = FALSE,
   ...
 )
 }
@@ -44,6 +45,8 @@ geom_curve_dual_function(
 
 \item{args}{List of arguments passed to \code{fun} (for example, list(df = 1) for \code{dt}).}
 
+\item{smooth}{Use smooth dual-stroke curves (\code{geom_path}) instead of segmented curves (\code{geom_curve_dual}). Default is FALSE.}
+
 \item{...}{Additional arguments passed to \code{geom_curve_dual()}.}
 }
 \value{
@@ -54,6 +57,20 @@ Draws a function (e.g., density or mathematical curve) using perceptually offset
 }
 \examples{
 library(ggplot2)
+
+base <- ggplot() + xlim(-2.05,2.05)
+base +
+  geom_curve_dual_function(
+  fun = function(x) 0.5 * exp(-abs(x)),
+  xlim = c(-2, 2),
+  color1 = "#EEEEEE",
+  color2 = "#222222",
+  offset = 0.004,
+  linewidth = 1.2,
+  smooth = TRUE
+  ) +
+  theme_dark()
+
 pair1 <- adjust_contrast_pair("#FFFFFF", background = "black", method = "APCA")
 pair2 <- adjust_contrast_pair("#AAAAAA", background = "black", method = "APCA")
 
@@ -64,7 +81,8 @@ ggplot() +
     color1  = pair1$light,
     color2 = pair1$dark,
     offset = 0.003,
-    linewidth = 1
+    linewidth = 1.5,
+    smooth = TRUE
   ) +
   geom_curve_dual_function(
     fun = dt,
@@ -73,7 +91,8 @@ ggplot() +
     color1  = pair2$light,
     color2 = pair2$dark,
     offset = 0.003,
-    linewidth = 2
+    linewidth = 1.5,
+    smooth = TRUE
   ) +
   theme_dark()
 
