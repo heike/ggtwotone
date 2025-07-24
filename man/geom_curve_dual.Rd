@@ -10,11 +10,11 @@ geom_curve_dual(
   stat = "identity",
   position = "identity",
   ...,
-  offset = 0.01,
+  offset = 0.003,
   curvature = 0.3,
   angle = 90,
   ncp = 5,
-  color = "white",
+  color1 = "white",
   color2 = "black",
   na.rm = FALSE,
   show.legend = NA,
@@ -104,7 +104,7 @@ lists which parameters it can accept.
 
 \item{ncp}{Number of control points (default: 5).}
 
-\item{color}{Color for the top (visible) stroke (default: white).}
+\item{color1}{Color for the top (visible) stroke (default: white).}
 
 \item{color2}{Color for the bottom (outline) stroke (default: black).}
 
@@ -157,7 +157,7 @@ ggplot() +
   geom_curve_dual(
     data = data.frame(x = 1, y = 1, xend = 6, yend = 4),
     aes(x = x, y = y, xend = xend, yend = yend),
-    color = "white", color2 = "black",
+    color1 = "white", color2 = "black",
     curvature = 0.4, offset = 0.003, linewidth = 2
   ) +
   scale_fill_identity() +
