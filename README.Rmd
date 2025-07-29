@@ -86,6 +86,65 @@ ggplot() +
 
 ```
 
+```{r}
+library(dplyr)
+
+# Zone-colored background
+set.seed(42)
+tile_df <- expand.grid(x = -7:7, y = -7:7)
+zones <- c("Desert", "Forest", "Sea", "Urban")
+zone_colors <- c(
+  "Desert" = "#EDC9AF",
+  "Forest" = "#14532d",
+  "Sea"    = "#0F3556",
+  "Urban"  = "#888888"
+)
+tile_df$zone <- sample(zones, nrow(tile_df), replace = TRUE)
+tile_df$fill <- zone_colors[tile_df$zone]
+
+# Simulated wind directions and speeds
+angle <- seq(0, 360, by = 15)
+speed <- runif(length(angle), min = 1, max = 3.5)  # Wind speed in m/s
+scale_factor <- 1.8  # Increase arrow length visually
+
+wind_df <- data.frame(
+  x = 0, y = 0,
+  angle = angle,
+  speed = speed,
+  xend = scale_factor * speed * cos(angle * pi / 180),
+  yend = scale_factor * speed * sin(angle * pi / 180)
+)
+
+# Plot
+ggplot() +
+  geom_tile(data = tile_df, aes(x = x, y = y, fill = zone)) +
+  scale_fill_manual(values = zone_colors, name = "Zone Type") +
+
+  geom_segment_dual(
+    data = wind_df,
+    aes(x = x, y = y, xend = xend, yend = yend),
+    color1 = "#FFFFFF", color2 = "#111111",
+    linewidth = 1.1,
+    arrow = arrow(length = unit(0.15, "inches"), type = "open"),
+    alpha = 0.9
+  ) +
+
+  coord_fixed(xlim = c(-5, 5), ylim = c(-5, 5)) +
+  theme_minimal(base_size = 14) +
+  theme(
+    panel.background = element_rect(fill = "white", color = NA)
+  ) +
+  labs(
+    title = "Wind Directions Across Zones",
+    subtitle = "Arrow length scaled to represent wind speed (m/s); \ndual-stroke arrows ensure readability across terrain",
+    x = "Longitude",
+    y = "Latitude"
+  )
+```
+
+This example visualizes wind directions and speeds over a zone-classified terrain map using `geom_segment_dual()`.  
+Arrow length is scaled by wind speed (in m/s), and dual-stroke styling ensures clear visibility across contrasting terrain types such as desert, forest, sea, and urban zones.
+
 # Motivation
 
 In real-world plots, especially on mixed backgrounds (grayscale tiles,
