@@ -33,6 +33,7 @@ GeomTextContrast <- ggplot2::ggproto("GeomTextContrast", ggplot2::Geom,
                                                       adjust_contrast_pair(base, contrast = contrast, method = method, background = bg),
                                                       error = function(e) list(light = "#FFFFFF", dark = "#000000")
                                                     )
+
                                                     ifelse(colorspace::contrast_ratio(cp$light, bg) > colorspace::contrast_ratio(cp$dark, bg),
                                                            cp$light, cp$dark)
                                                   },

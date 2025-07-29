@@ -26,13 +26,26 @@ adjust_contrast_pair <- function(color, contrast = 4.5, method = "auto", backgro
     return(list(light = "#FFFFFF", dark = "#000000", contrast = NA))
   }
 
-  base_hcl <- tryCatch({
-    as(colorspace::hex2RGB(color), "polarLUV")@coords
-  }, error = function(e) NULL)
+  base_hcl <- if (quiet) {
+    tryCatch({
+      suppressWarnings(as(colorspace::hex2RGB(color), "polarLUV")@coords)
+    }, error = function(e) NULL)
+  } else {
+    tryCatch({
+      as(colorspace::hex2RGB(color), "polarLUV")@coords
+    }, error = function(e) {
+      warning(sprintf("Could not convert base color %s to HCL.", color))
+      NULL
+    })
+  }
 
-  if (is.null(base_hcl)) {
-    warning(sprintf("Could not convert base color %s to HCL.", color))
-    return(list(light = "#FFFFFF", dark = "#000000", contrast = NA))
+  if (is.null(base_hcl) || !is.numeric(base_hcl) || length(base_hcl) < 2) {
+    return(list(
+      light = "#FFFFFF",
+      dark = "#000000",
+      contrast = NA,
+      method = method
+    ))
   }
 
   h <- base_hcl[1]; c <- base_hcl[2]

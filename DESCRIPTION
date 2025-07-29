@@ -5,12 +5,17 @@ Version: 0.1.0
 Authors@R: c(
     person(
       "Beenu", "Sareena",
-      email = "jane@example.com",
+      email = "beenusareena810@gmail.com",
       role = c("aut", "cre")
     )
   )
-Description: Adds dual-stroke and contrast-adaptive geoms for ggplot2, including 
-    geom_segment_dual, geom_lm_dual, geom_text_contrast, and geom_curve_dual.
+Description: Provides dual-stroke and contrast-aware extensions to 'ggplot2', 
+    designed for improved visibility and accessibility in complex visualizations. 
+    Includes geoms for dual-stroke segments, regression lines, curved annotations, 
+    function plots, and adaptive text: 'geom_segment_dual', 'geom_lm_dual', 
+    'geom_curve_dual', 'geom_curve_dual_function', and 'geom_text_contrast'. 
+    Also includes a utility function 'adjust_contrast_pair()' for computing 
+    perceptually distinct color pairs using WCAG or APCA contrast standards.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -29,3 +34,6 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 URL: https://github.com/bwanniarachchige2/ggtwotone
 BugReports: https://github.com/bwanniarachchige2/ggtwotone/issues
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3

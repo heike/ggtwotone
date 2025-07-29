@@ -1,80 +1,80 @@
 GeomSegmentDual <- ggplot2::ggproto("GeomSegmentDual", ggplot2::Geom,
-                           required_aes = c("x", "y", "xend", "yend"),
-                           default_aes = ggplot2::aes(
-                             color1 = "black",
-                             color2 = "white",
-                             linewidth = 0.5,
-                             linetype = 1,
-                             alpha = NA
-                           ),
-                           draw_key = ggplot2::draw_key_path,
+                                    required_aes = c("x", "y", "xend", "yend"),
+                                    default_aes = ggplot2::aes(
+                                      color1 = "black",
+                                      color2 = "white",
+                                      linewidth = 0.5,
+                                      linetype = 1,
+                                      alpha = NA
+                                    ),
+                                    draw_key = ggplot2::draw_key_path,
 
-                           draw_panel = function(self, data, panel_params, coord, arrow = NULL,
-                                                 arrow.fill = NULL, lineend = "butt", linejoin = "round",
-                                                 na.rm = FALSE) {
-
-
-                             coords <- coord$transform(data, panel_params)
-
-                             pt_width = grid::convertWidth(unit(.5 * .pt, "pt"), "npc", valueOnly = TRUE)
-                             pt_height = grid::convertHeight(unit(.5 * .pt, "pt"), "npc", valueOnly = TRUE)
-
-                            coords <- coords |> dplyr::mutate(
-                              dx = (xend - x),
-                              dy = (yend - y),
-                              len = sqrt(dx^2+dy^2),
-                              angle = asin(dy/len),
-                              offset_x = linewidth/2*pt_width*sin(angle),
-                              offset_y = linewidth/2*pt_height*cos(angle)
-                            )
-
-                             data1 <- coords  # top stroke
-                             data2 <- coords  # bottom stroke
-                             data1$x    <- data1$x + data1$offset_x
-                             data1$xend <- data1$xend + data1$offset_x
-                             data1$y    <- data1$y - sign(data1$dx)*data1$offset_y
-                             data1$yend <- data1$yend - sign(data1$dx)* data1$offset_y
-                             data2$x    <- data2$x - data2$offset_x
-                             data2$xend <- data2$xend - data2$offset_x
-                             data2$y    <- data2$y + sign(data1$dx)* data2$offset_y
-                             data2$yend <- data2$yend + sign(data1$dx)* data2$offset_y
-                             coords1 <- data1 #coord$transform(data1, panel_params)
-                             coords2 <- data2 #coord$transform(data2, panel_params)
+                                    draw_panel = function(self, data, panel_params, coord, arrow = NULL,
+                                                          arrow.fill = NULL, lineend = "butt", linejoin = "round",
+                                                          na.rm = FALSE) {
 
 
-                             alpha1 <- if (all(is.na(coords1$alpha))) NULL else coords1$alpha
-                             alpha2 <- if (all(is.na(coords2$alpha))) NULL else coords2$alpha
+                                      coords <- coord$transform(data, panel_params)
 
-                             # Bottom stroke (darker, drawn first and slightly thicker)
-                             s2 <- grid::segmentsGrob(
-                               x0 = coords2$x, x1 = coords2$xend,
-                               y0 = coords2$y, y1 = coords2$yend,
-                               gp = grid::gpar(
-                                 col = coords2$colour2,
-                                 lwd = (coords2$linewidth * 0.5) * .pt,
-                                 lty = coords2$linetype,
-                                 alpha = alpha2,
-                                 lineend = lineend
-                               ),
-                               arrow = arrow
-                             )
+                                      pt_width = grid::convertWidth(unit(.5 * .pt, "pt"), "npc", valueOnly = TRUE)
+                                      pt_height = grid::convertHeight(unit(.5 * .pt, "pt"), "npc", valueOnly = TRUE)
 
-                             # Top stroke (lighter)
-                             s1 <- grid::segmentsGrob(
-                               x0 = coords1$x, x1 = coords1$xend,
-                               y0 = coords1$y, y1 = coords1$yend,
-                               gp = grid::gpar(
-                                 col = coords1$colour1,
-                                 lwd = (coords1$linewidth * 0.5) * .pt,
-                                 lty = coords1$linetype,
-                                 alpha = alpha1,
-                                 lineend = lineend
-                               ),
-                               arrow = arrow
-                             )
+                                      coords <- coords |> dplyr::mutate(
+                                        dx = (xend - x),
+                                        dy = (yend - y),
+                                        len = sqrt(dx^2+dy^2),
+                                        angle = asin(dy/len),
+                                        offset_x = linewidth/2*pt_width*sin(angle),
+                                        offset_y = linewidth/2*pt_height*cos(angle)
+                                      )
 
-                             grid::gList(s2, s1)
-                           }
+                                      data1 <- coords  # top stroke
+                                      data2 <- coords  # bottom stroke
+                                      data1$x    <- data1$x + data1$offset_x
+                                      data1$xend <- data1$xend + data1$offset_x
+                                      data1$y    <- data1$y - sign(data1$dx)*data1$offset_y
+                                      data1$yend <- data1$yend - sign(data1$dx)* data1$offset_y
+                                      data2$x    <- data2$x - data2$offset_x
+                                      data2$xend <- data2$xend - data2$offset_x
+                                      data2$y    <- data2$y + sign(data1$dx)* data2$offset_y
+                                      data2$yend <- data2$yend + sign(data1$dx)* data2$offset_y
+                                      coords1 <- data1 #coord$transform(data1, panel_params)
+                                      coords2 <- data2 #coord$transform(data2, panel_params)
+
+
+                                      alpha1 <- if (all(is.na(coords1$alpha))) NULL else coords1$alpha
+                                      alpha2 <- if (all(is.na(coords2$alpha))) NULL else coords2$alpha
+
+                                      # Bottom stroke (darker, drawn first and slightly thicker)
+                                      s2 <- grid::segmentsGrob(
+                                        x0 = coords2$x, x1 = coords2$xend,
+                                        y0 = coords2$y, y1 = coords2$yend,
+                                        gp = grid::gpar(
+                                          col = coords2$colour2,
+                                          lwd = (coords2$linewidth * 0.5) * .pt,
+                                          lty = coords2$linetype,
+                                          alpha = alpha2,
+                                          lineend = lineend
+                                        ),
+                                        arrow = arrow
+                                      )
+
+                                      # Top stroke (lighter)
+                                      s1 <- grid::segmentsGrob(
+                                        x0 = coords1$x, x1 = coords1$xend,
+                                        y0 = coords1$y, y1 = coords1$yend,
+                                        gp = grid::gpar(
+                                          col = coords1$colour1,
+                                          lwd = (coords1$linewidth * 0.5) * .pt,
+                                          lty = coords1$linetype,
+                                          alpha = alpha1,
+                                          lineend = lineend
+                                        ),
+                                        arrow = arrow
+                                      )
+
+                                      grid::gList(s2, s1)
+                                    }
 )
 
 #' Dual-Stroke Line Segments with Vertical Offset
@@ -180,4 +180,3 @@ geom_segment_dual <- function(mapping = NULL, data = NULL,
     )
   )
 }
-
