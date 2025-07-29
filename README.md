@@ -14,19 +14,19 @@ backgrounds.
 
 ## What’s Inside
 
-- geom_segment_dual() Dual-stroke line segments with vertical offset
+- geom_segment_dual(): Dual-stroke line segments with vertical offset
 
-- geom_lm_dual() Dual-tone regression line with contrast-aware strokes
+- geom_lm_dual(): Dual-tone regression line with contrast-aware strokes
 
-- geom_curve_dual() Dual-stroke curved line annotations
+- geom_curve_dual(): Dual-stroke curved line annotations
 
-- geom_curve_dual_function() Plot mathematical or statistical functions
+- geom_curve_dual_function(): Plot mathematical or statistical functions
   as smooth dual-stroke curves
 
-- geom_text_contrast() Automatically switches between light/dark text
+- geom_text_contrast(): Automatically switches between light/dark text
   color based on background
 
-- adjust_contrast_pair() Helper function to find contrast-boosted color
+- adjust_contrast_pair(): Helper function to find contrast-boosted color
   pairs using WCAG/APCA
 
 ## Installation
@@ -76,6 +76,14 @@ ggplot() +
 
 ``` r
 library(dplyr)
+#> 
+#> Attaching package: 'dplyr'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
 
 # Zone-colored background
 set.seed(42)
