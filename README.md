@@ -39,38 +39,60 @@ You can install the development version of ggtwotone from
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+These are some examples which show you how to use the package:
 
     library(ggplot2)
     library(ggtwotone)
+    library(magick)
+    library(grid)
 
-    df <- data.frame(x = 1:3, y = 1, xend = 1:3, yend = 2)
+    # Load background image (adjust path to your image file)
+    img <- magick::image_read("background_image.png")  # or .jpg
+    #> Error: rsession-arm64: UnableToOpenBlob `background_image.png': No such file or directory @ error/blob.c/OpenBlob/2960
 
-    ggplot(df) +
-      geom_segment_dual(
-        aes(x = x, y = y, xend = xend, yend = yend),
-        color1 = "#FFFFFF", color2 = "#000000", linewidth = 2
-      ) +
-      theme_dark()
+    # Convert image to a rasterGrob
+    bg_grob <- grid::rasterGrob(img, width = unit(1,"npc"), height = unit(1,"npc"))
 
-<img src="man/figures/README-example-1.png" width="100%" />
-
+    # Plot your dual-stroke function curves over the image
     ggplot() +
+      annotation_custom(bg_grob, xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf) +
+
       geom_curve_dual_function(
         fun = dnorm,
-        xlim = c(-3, 3),
-        color1 = "#EEEEEE", color2 = "#222222",
-        offset = 0.004,
+        xlim = c(-3, 6),
+        color1 = "#FFFFFF",
+        color2 = "#000000",
+        offset = 0.003,
         linewidth = 1.2,
         smooth = TRUE
       ) +
-      theme_dark()
 
-<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
+      geom_curve_dual_function(
+        fun = function(x) 0.5 * exp(-abs(x - 2)),
+        xlim = c(-3, 6),
+        color1 = "#FFFFCC",
+        color2 = "#4B0000",
+        offset = 0.003,
+        linewidth = 1.2,
+        smooth = TRUE
+      ) +
+
+      coord_cartesian(ylim = c(0, 0.5)) +
+      theme_void() +
+      theme(
+        plot.background = element_rect(fill = "transparent", color = NA),
+        panel.background = element_rect(fill = "transparent", color = NA)
+      ) +
+      labs(
+        title = "Curves over Image Background",
+        subtitle = "Dual-stroke rendering stays visible over image background"
+      )
+
+<img src="man/figures/README-example1-1.png" width="100%" />
 
     library(dplyr)
 
-    # 1. Zone-colored background with more Sea tiles
+    # Zone-colored background with more Sea tiles
     set.seed(42)
     tile_df <- expand.grid(x = -7:7, y = -7:7)
     zones <- c("Desert", "Forest", "Sea", "Urban")
@@ -87,7 +109,7 @@ This is a basic example which shows you how to solve a common problem:
       prob = c(0.2, 0.2, 0.4, 0.2)  # Increase Sea coverage
     )
 
-    # 2. Realistic wind vectors from various points
+    # Realistic wind vectors from various points
     set.seed(42)
     n <- 25
     wind_df <- data.frame(
@@ -101,7 +123,7 @@ This is a basic example which shows you how to solve a common problem:
         yend = y + speed * sin(angle * pi / 180)
       )
 
-    # 3. Plot with dual-stroke arrows
+    # Plot with dual-stroke arrows
     ggplot() +
       geom_tile(data = tile_df, aes(x = x, y = y, fill = zone)) +
       scale_fill_manual(values = zone_colors, name = "Zone Type") +
@@ -128,13 +150,77 @@ This is a basic example which shows you how to solve a common problem:
         y = "Latitude"
       )
 
-<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
+<img src="man/figures/README-example2-1.png" width="100%" />
 
 This example visualizes wind directions and speeds over a
 zone-classified terrain map using `geom_segment_dual()`.  
 Arrow length is scaled by wind speed (in m/s), and dual-stroke styling
 ensures clear visibility across contrasting terrain types such as
 desert, forest, sea, and urban zones.
+
+    library(ggplot2)
+    library(ggtwotone)
+
+    # Define the dataset
+    df <- mpg
+
+    # Create the plot
+    ggplot(df, aes(x = displ, y = hwy)) +
+      geom_point(color = "darkgreen", size = 3, alpha = 0.7) +
+
+      geom_lm_dual(
+        data = df,
+        mapping = aes(x = displ, y = hwy),
+        method = "lm",
+        formula = hwy ~ displ,       # explicitly define formula using column names
+        base_color = "#555555",
+        contrast = 4.5,
+        method_contrast = "auto",
+        linewidth = 1.2
+      ) +
+
+      theme_minimal(base_size = 14) +
+      labs(
+        title = "Engine Displacement vs. Highway MPG",
+        subtitle = "Regression line with dual-stroke contrast for visibility",
+        x = "Displacement (L)",
+        y = "Highway MPG"
+      )
+
+<img src="man/figures/README-example3-1.png" width="100%" />
+
+    library(dplyr)
+
+    # Sample from real storm data
+    data("storms", package = "dplyr")
+
+    storm_subset <- storms %>%
+      filter(name == "Katrina", year == 2005) %>%
+      mutate(
+        x = lag(long), y = lag(lat),
+        xend = long, yend = lat
+      ) %>%
+      filter(!is.na(x), !is.na(y))  # remove first row with NA lag
+
+    # Plot: dual-stroke arrows for storm path
+    ggplot(storm_subset) +
+      geom_segment_dual(
+        aes(x = x, y = y, xend = xend, yend = yend, group = 1),
+        color1 = "white", color2 = "black",
+        linewidth = 1.2,
+        arrow = arrow(length = unit(0.08, "inches"), type = "open")
+      ) +
+      geom_point(aes(x = xend, y = yend, color = wind), size = 2) +
+      scale_color_viridis_c(option = "C", name = "Wind Speed") +
+      coord_fixed() +
+      labs(
+        title = "Storm Track of Hurricane Katrina (2005)",
+        subtitle = "Arrow direction shows storm movement; \nstroke ensures visibility on top of wind-colored dots",
+        x = "Longitude", y = "Latitude"
+      ) +
+      theme_dark()
+
+<img src="man/figures/README-example4-1.png" width="100%" />
 
 # Motivation
 
