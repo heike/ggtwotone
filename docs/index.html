@@ -85,101 +85,95 @@
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <p>You can install the development version of ggtwotone from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
-<span><span class="fu">pak</span><span class="fu">::</span><span class="fu">pak</span><span class="op">(</span><span class="st">"bwanniarachchige2/ggtwotone"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># install.packages("pak")</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>pak<span class="sc">::</span><span class="fu">pak</span>(<span class="st">"bwanniarachchige2/ggtwotone"</span>)</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h2>
 <p>This is a basic example which shows you how to solve a common problem:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bwanniarachchige2/ggtwotone" class="external-link">ggtwotone</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, y <span class="op">=</span> <span class="fl">1</span>, xend <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, yend <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="reference/geom_segment_dual.html">geom_segment_dual</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, xend <span class="op">=</span> <span class="va">xend</span>, yend <span class="op">=</span> <span class="va">yend</span><span class="op">)</span>,</span>
-<span>    color1 <span class="op">=</span> <span class="st">"#FFFFFF"</span>, color2 <span class="op">=</span> <span class="st">"#000000"</span>, linewidth <span class="op">=</span> <span class="fl">2</span></span>
-<span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_dark</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="fu">library</span>(ggtwotone)</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">y =</span> <span class="dv">1</span>, <span class="at">xend =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">yend =</span> <span class="dv">2</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="fu">ggplot</span>(df) <span class="sc">+</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>  <span class="fu">geom_segment_dual</span>(</span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">xend =</span> xend, <span class="at">yend =</span> yend),</span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>    <span class="at">color1 =</span> <span class="st">"#FFFFFF"</span>, <span class="at">color2 =</span> <span class="st">"#000000"</span>, <span class="at">linewidth =</span> <span class="dv">2</span></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>  <span class="fu">theme_dark</span>()</span></code></pre></div>
 <p><img src="reference/figures/README-example-1.png" width="100%"></p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="reference/geom_curve_dual_function.html">geom_curve_dual_function</a></span><span class="op">(</span></span>
-<span>    fun <span class="op">=</span> <span class="va">dnorm</span>,</span>
-<span>    xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span>,</span>
-<span>    color1 <span class="op">=</span> <span class="st">"#EEEEEE"</span>, color2 <span class="op">=</span> <span class="st">"#222222"</span>,</span>
-<span>    offset <span class="op">=</span> <span class="fl">0.004</span>,</span>
-<span>    linewidth <span class="op">=</span> <span class="fl">1.2</span>,</span>
-<span>    smooth <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_dark</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="fu">geom_curve_dual_function</span>(</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>    <span class="at">fun =</span> dnorm,</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>    <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="dv">3</span>),</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>    <span class="at">color1 =</span> <span class="st">"#EEEEEE"</span>, <span class="at">color2 =</span> <span class="st">"#222222"</span>,</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>    <span class="at">offset =</span> <span class="fl">0.004</span>,</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>    <span class="at">linewidth =</span> <span class="fl">1.2</span>,</span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>    <span class="at">smooth =</span> <span class="cn">TRUE</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>  <span class="fu">theme_dark</span>()</span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-2-1.png" width="100%"></p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'dplyr'</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     filter, lag</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
-<span></span>
-<span><span class="co"># Zone-colored background</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span></span>
-<span><span class="va">tile_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span>x <span class="op">=</span> <span class="op">-</span><span class="fl">7</span><span class="op">:</span><span class="fl">7</span>, y <span class="op">=</span> <span class="op">-</span><span class="fl">7</span><span class="op">:</span><span class="fl">7</span><span class="op">)</span></span>
-<span><span class="va">zones</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Desert"</span>, <span class="st">"Forest"</span>, <span class="st">"Sea"</span>, <span class="st">"Urban"</span><span class="op">)</span></span>
-<span><span class="va">zone_colors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>  <span class="st">"Desert"</span> <span class="op">=</span> <span class="st">"#EDC9AF"</span>,</span>
-<span>  <span class="st">"Forest"</span> <span class="op">=</span> <span class="st">"#14532d"</span>,</span>
-<span>  <span class="st">"Sea"</span>    <span class="op">=</span> <span class="st">"#0F3556"</span>,</span>
-<span>  <span class="st">"Urban"</span>  <span class="op">=</span> <span class="st">"#888888"</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">tile_df</span><span class="op">$</span><span class="va">zone</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">zones</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">tile_df</span><span class="op">)</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">tile_df</span><span class="op">$</span><span class="va">fill</span> <span class="op">&lt;-</span> <span class="va">zone_colors</span><span class="op">[</span><span class="va">tile_df</span><span class="op">$</span><span class="va">zone</span><span class="op">]</span></span>
-<span></span>
-<span><span class="co"># Simulated wind directions and speeds</span></span>
-<span><span class="va">angle</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">360</span>, by <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></span>
-<span><span class="va">speed</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">angle</span><span class="op">)</span>, min <span class="op">=</span> <span class="fl">1</span>, max <span class="op">=</span> <span class="fl">3.5</span><span class="op">)</span>  <span class="co"># Wind speed in m/s</span></span>
-<span><span class="va">scale_factor</span> <span class="op">&lt;-</span> <span class="fl">1.8</span>  <span class="co"># Increase arrow length visually</span></span>
-<span></span>
-<span><span class="va">wind_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span>  x <span class="op">=</span> <span class="fl">0</span>, y <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>  angle <span class="op">=</span> <span class="va">angle</span>,</span>
-<span>  speed <span class="op">=</span> <span class="va">speed</span>,</span>
-<span>  xend <span class="op">=</span> <span class="va">scale_factor</span> <span class="op">*</span> <span class="va">speed</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">cos</a></span><span class="op">(</span><span class="va">angle</span> <span class="op">*</span> <span class="va">pi</span> <span class="op">/</span> <span class="fl">180</span><span class="op">)</span>,</span>
-<span>  yend <span class="op">=</span> <span class="va">scale_factor</span> <span class="op">*</span> <span class="va">speed</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="va">angle</span> <span class="op">*</span> <span class="va">pi</span> <span class="op">/</span> <span class="fl">180</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Plot</span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html" class="external-link">geom_tile</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">tile_df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, fill <span class="op">=</span> <span class="va">zone</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="va">zone_colors</span>, name <span class="op">=</span> <span class="st">"Zone Type"</span><span class="op">)</span> <span class="op">+</span></span>
-<span></span>
-<span>  <span class="fu"><a href="reference/geom_segment_dual.html">geom_segment_dual</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="va">wind_df</span>,</span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, xend <span class="op">=</span> <span class="va">xend</span>, yend <span class="op">=</span> <span class="va">yend</span><span class="op">)</span>,</span>
-<span>    color1 <span class="op">=</span> <span class="st">"#FFFFFF"</span>, color2 <span class="op">=</span> <span class="st">"#111111"</span>,</span>
-<span>    linewidth <span class="op">=</span> <span class="fl">1.1</span>,</span>
-<span>    arrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/arrow.html" class="external-link">arrow</a></span><span class="op">(</span>length <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">0.15</span>, <span class="st">"inches"</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">"open"</span><span class="op">)</span>,</span>
-<span>    alpha <span class="op">=</span> <span class="fl">0.9</span></span>
-<span>  <span class="op">)</span> <span class="op">+</span></span>
-<span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_fixed.html" class="external-link">coord_fixed</a></span><span class="op">(</span>xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">14</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span></span>
-<span>    panel.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"white"</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span>
-<span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
-<span>    title <span class="op">=</span> <span class="st">"Wind Directions Across Zones"</span>,</span>
-<span>    subtitle <span class="op">=</span> <span class="st">"Arrow length scaled to represent wind speed (m/s); \ndual-stroke arrows ensure readability across terrain"</span>,</span>
-<span>    x <span class="op">=</span> <span class="st">"Longitude"</span>,</span>
-<span>    y <span class="op">=</span> <span class="st">"Latitude"</span></span>
-<span>  <span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="co"># 1. Zone-colored background with more Sea tiles</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>tile_df <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">x =</span> <span class="sc">-</span><span class="dv">7</span><span class="sc">:</span><span class="dv">7</span>, <span class="at">y =</span> <span class="sc">-</span><span class="dv">7</span><span class="sc">:</span><span class="dv">7</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>zones <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Desert"</span>, <span class="st">"Forest"</span>, <span class="st">"Sea"</span>, <span class="st">"Urban"</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>zone_colors <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>  <span class="st">"Desert"</span> <span class="ot">=</span> <span class="st">"#EDC9AF"</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>  <span class="st">"Forest"</span> <span class="ot">=</span> <span class="st">"#14532d"</span>,</span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>  <span class="st">"Sea"</span>    <span class="ot">=</span> <span class="st">"#0F3556"</span>,</span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>  <span class="st">"Urban"</span>  <span class="ot">=</span> <span class="st">"#eeeeee"</span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>)</span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>tile_df<span class="sc">$</span>zone <span class="ot">&lt;-</span> <span class="fu">sample</span>(</span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>  zones,</span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>  <span class="at">size =</span> <span class="fu">nrow</span>(tile_df),</span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a>  <span class="at">replace =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a>  <span class="at">prob =</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="fl">0.2</span>, <span class="fl">0.4</span>, <span class="fl">0.2</span>)  <span class="co"># Increase Sea coverage</span></span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a>)</span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a></span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a><span class="co"># 2. Realistic wind vectors from various points</span></span>
+<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">25</span></span>
+<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a>wind_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">sample</span>(<span class="sc">-</span><span class="dv">4</span><span class="sc">:</span><span class="dv">4</span>, n, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">sample</span>(<span class="sc">-</span><span class="dv">4</span><span class="sc">:</span><span class="dv">4</span>, n, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a>  <span class="at">angle =</span> <span class="fu">runif</span>(n, <span class="dv">180</span>, <span class="dv">270</span>),  <span class="co"># Southwest quadrant</span></span>
+<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a>  <span class="at">speed =</span> <span class="fu">runif</span>(n, <span class="fl">1.5</span>, <span class="dv">4</span>)     <span class="co"># Speed in m/s</span></span>
+<span id="cb4-28"><a href="#cb4-28" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb4-29"><a href="#cb4-29" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb4-30"><a href="#cb4-30" tabindex="-1"></a>    <span class="at">xend =</span> x <span class="sc">+</span> speed <span class="sc">*</span> <span class="fu">cos</span>(angle <span class="sc">*</span> pi <span class="sc">/</span> <span class="dv">180</span>),</span>
+<span id="cb4-31"><a href="#cb4-31" tabindex="-1"></a>    <span class="at">yend =</span> y <span class="sc">+</span> speed <span class="sc">*</span> <span class="fu">sin</span>(angle <span class="sc">*</span> pi <span class="sc">/</span> <span class="dv">180</span>)</span>
+<span id="cb4-32"><a href="#cb4-32" tabindex="-1"></a>  )</span>
+<span id="cb4-33"><a href="#cb4-33" tabindex="-1"></a></span>
+<span id="cb4-34"><a href="#cb4-34" tabindex="-1"></a><span class="co"># 3. Plot with dual-stroke arrows</span></span>
+<span id="cb4-35"><a href="#cb4-35" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb4-36"><a href="#cb4-36" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">data =</span> tile_df, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">fill =</span> zone)) <span class="sc">+</span></span>
+<span id="cb4-37"><a href="#cb4-37" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> zone_colors, <span class="at">name =</span> <span class="st">"Zone Type"</span>) <span class="sc">+</span></span>
+<span id="cb4-38"><a href="#cb4-38" tabindex="-1"></a></span>
+<span id="cb4-39"><a href="#cb4-39" tabindex="-1"></a>  <span class="fu">geom_segment_dual</span>(</span>
+<span id="cb4-40"><a href="#cb4-40" tabindex="-1"></a>    <span class="at">data =</span> wind_df,</span>
+<span id="cb4-41"><a href="#cb4-41" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">xend =</span> xend, <span class="at">yend =</span> yend),</span>
+<span id="cb4-42"><a href="#cb4-42" tabindex="-1"></a>    <span class="at">color1 =</span> <span class="st">"#FFFFFF"</span>, <span class="at">color2 =</span> <span class="st">"#111111"</span>,</span>
+<span id="cb4-43"><a href="#cb4-43" tabindex="-1"></a>    <span class="at">linewidth =</span> <span class="fl">1.2</span>,</span>
+<span id="cb4-44"><a href="#cb4-44" tabindex="-1"></a>    <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">length =</span> <span class="fu">unit</span>(<span class="fl">0.15</span>, <span class="st">"inches"</span>), <span class="at">type =</span> <span class="st">"open"</span>),</span>
+<span id="cb4-45"><a href="#cb4-45" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.9</span></span>
+<span id="cb4-46"><a href="#cb4-46" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb4-47"><a href="#cb4-47" tabindex="-1"></a></span>
+<span id="cb4-48"><a href="#cb4-48" tabindex="-1"></a>  <span class="fu">coord_fixed</span>(<span class="at">xlim =</span> <span class="fu">range</span>(<span class="fu">c</span>(wind_df<span class="sc">$</span>x, wind_df<span class="sc">$</span>xend)),</span>
+<span id="cb4-49"><a href="#cb4-49" tabindex="-1"></a>            <span class="at">ylim =</span> <span class="fu">range</span>(<span class="fu">c</span>(wind_df<span class="sc">$</span>y, wind_df<span class="sc">$</span>yend))) <span class="sc">+</span></span>
+<span id="cb4-50"><a href="#cb4-50" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb4-51"><a href="#cb4-51" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb4-52"><a href="#cb4-52" tabindex="-1"></a>    <span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"white"</span>, <span class="at">color =</span> <span class="cn">NA</span>)</span>
+<span id="cb4-53"><a href="#cb4-53" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb4-54"><a href="#cb4-54" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb4-55"><a href="#cb4-55" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Wind Directions Across Zones"</span>,</span>
+<span id="cb4-56"><a href="#cb4-56" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Arrow direction and length represent wind flow and speed (m/s);</span><span class="sc">\n</span><span class="st">dual-stroke improves visibility"</span>,</span>
+<span id="cb4-57"><a href="#cb4-57" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Longitude"</span>,</span>
+<span id="cb4-58"><a href="#cb4-58" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Latitude"</span></span>
+<span id="cb4-59"><a href="#cb4-59" tabindex="-1"></a>  )</span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-3-1.png" width="100%"></p>
 <p>This example visualizes wind directions and speeds over a zone-classified terrain map using <code><a href="reference/geom_segment_dual.html">geom_segment_dual()</a></code>.<br>
 Arrow length is scaled by wind speed (in m/s), and dual-stroke styling ensures clear visibility across contrasting terrain types such as desert, forest, sea, and urban zones.</p>
