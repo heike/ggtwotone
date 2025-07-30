@@ -46,14 +46,12 @@ These are some examples which show you how to use the package:
     library(magick)
     library(grid)
 
-    # Load background image (adjust path to your image file)
-    img <- magick::image_read("background_image.png")  # or .jpg
-    #> Error: rsession-arm64: UnableToOpenBlob `background_image.png': No such file or directory @ error/blob.c/OpenBlob/2960
+    img <- magick::image_read("background_image.jpg")
 
     # Convert image to a rasterGrob
     bg_grob <- grid::rasterGrob(img, width = unit(1,"npc"), height = unit(1,"npc"))
 
-    # Plot your dual-stroke function curves over the image
+    # Plot
     ggplot() +
       annotation_custom(bg_grob, xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf) +
 
@@ -92,7 +90,7 @@ These are some examples which show you how to use the package:
 
     library(dplyr)
 
-    # Zone-colored background with more Sea tiles
+    # Zone-colored background
     set.seed(42)
     tile_df <- expand.grid(x = -7:7, y = -7:7)
     zones <- c("Desert", "Forest", "Sea", "Urban")
@@ -106,10 +104,10 @@ These are some examples which show you how to use the package:
       zones,
       size = nrow(tile_df),
       replace = TRUE,
-      prob = c(0.2, 0.2, 0.4, 0.2)  # Increase Sea coverage
+      prob = c(0.2, 0.2, 0.4, 0.2)
     )
 
-    # Realistic wind vectors from various points
+    # Realistic wind vectors
     set.seed(42)
     n <- 25
     wind_df <- data.frame(
@@ -123,7 +121,7 @@ These are some examples which show you how to use the package:
         yend = y + speed * sin(angle * pi / 180)
       )
 
-    # Plot with dual-stroke arrows
+    # Plot
     ggplot() +
       geom_tile(data = tile_df, aes(x = x, y = y, fill = zone)) +
       scale_fill_manual(values = zone_colors, name = "Zone Type") +
@@ -161,10 +159,9 @@ desert, forest, sea, and urban zones.
     library(ggplot2)
     library(ggtwotone)
 
-    # Define the dataset
     df <- mpg
 
-    # Create the plot
+    # plot
     ggplot(df, aes(x = displ, y = hwy)) +
       geom_point(color = "darkgreen", size = 3, alpha = 0.7) +
 
@@ -172,7 +169,7 @@ desert, forest, sea, and urban zones.
         data = df,
         mapping = aes(x = displ, y = hwy),
         method = "lm",
-        formula = hwy ~ displ,       # explicitly define formula using column names
+        formula = hwy ~ displ,
         base_color = "#555555",
         contrast = 4.5,
         method_contrast = "auto",
@@ -202,7 +199,7 @@ desert, forest, sea, and urban zones.
       ) %>%
       filter(!is.na(x), !is.na(y))  # remove first row with NA lag
 
-    # Plot: dual-stroke arrows for storm path
+    # Plot
     ggplot(storm_subset) +
       geom_segment_dual(
         aes(x = x, y = y, xend = xend, yend = yend, group = 1),
