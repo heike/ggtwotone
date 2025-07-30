@@ -13,8 +13,7 @@ Description: Adds dual-stroke and contrast-adaptive geoms for ggplot2, including
     geom_segment_dual, geom_lm_dual, geom_text_contrast, and geom_curve_dual.
 License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: true
-Depends: R (>= 3.5.0)
+Depends: R (>= 4.4.1)
 Imports:
     ggplot2,
     grid,
