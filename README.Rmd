@@ -89,7 +89,7 @@ ggplot() +
 ```{r}
 library(dplyr)
 
-# Zone-colored background
+# 1. Zone-colored background with more Sea tiles
 set.seed(42)
 tile_df <- expand.grid(x = -7:7, y = -7:7)
 zones <- c("Desert", "Forest", "Sea", "Urban")
@@ -97,25 +97,30 @@ zone_colors <- c(
   "Desert" = "#EDC9AF",
   "Forest" = "#14532d",
   "Sea"    = "#0F3556",
-  "Urban"  = "#888888"
+  "Urban"  = "#eeeeee"
 )
-tile_df$zone <- sample(zones, nrow(tile_df), replace = TRUE)
-tile_df$fill <- zone_colors[tile_df$zone]
+tile_df$zone <- sample(
+  zones,
+  size = nrow(tile_df),
+  replace = TRUE,
+  prob = c(0.2, 0.2, 0.4, 0.2)  # Increase Sea coverage
+)
 
-# Simulated wind directions and speeds
-angle <- seq(0, 360, by = 15)
-speed <- runif(length(angle), min = 1, max = 3.5)  # Wind speed in m/s
-scale_factor <- 1.8  # Increase arrow length visually
-
+# 2. Realistic wind vectors from various points
+set.seed(42)
+n <- 25
 wind_df <- data.frame(
-  x = 0, y = 0,
-  angle = angle,
-  speed = speed,
-  xend = scale_factor * speed * cos(angle * pi / 180),
-  yend = scale_factor * speed * sin(angle * pi / 180)
-)
+  x = sample(-4:4, n, replace = TRUE),
+  y = sample(-4:4, n, replace = TRUE),
+  angle = runif(n, 180, 270),  # Southwest quadrant
+  speed = runif(n, 1.5, 4)     # Speed in m/s
+) |>
+  mutate(
+    xend = x + speed * cos(angle * pi / 180),
+    yend = y + speed * sin(angle * pi / 180)
+  )
 
-# Plot
+# 3. Plot with dual-stroke arrows
 ggplot() +
   geom_tile(data = tile_df, aes(x = x, y = y, fill = zone)) +
   scale_fill_manual(values = zone_colors, name = "Zone Type") +
@@ -124,22 +129,24 @@ ggplot() +
     data = wind_df,
     aes(x = x, y = y, xend = xend, yend = yend),
     color1 = "#FFFFFF", color2 = "#111111",
-    linewidth = 1.1,
+    linewidth = 1.2,
     arrow = arrow(length = unit(0.15, "inches"), type = "open"),
     alpha = 0.9
   ) +
 
-  coord_fixed(xlim = c(-5, 5), ylim = c(-5, 5)) +
+  coord_fixed(xlim = range(c(wind_df$x, wind_df$xend)),
+            ylim = range(c(wind_df$y, wind_df$yend))) +
   theme_minimal(base_size = 14) +
   theme(
     panel.background = element_rect(fill = "white", color = NA)
   ) +
   labs(
     title = "Wind Directions Across Zones",
-    subtitle = "Arrow length scaled to represent wind speed (m/s); \ndual-stroke arrows ensure readability across terrain",
+    subtitle = "Arrow direction and length represent wind flow and speed (m/s);\ndual-stroke improves visibility",
     x = "Longitude",
     y = "Latitude"
   )
+
 ```
 
 This example visualizes wind directions and speeds over a zone-classified terrain map using `geom_segment_dual()`.  
