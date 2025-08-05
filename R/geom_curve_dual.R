@@ -2,7 +2,7 @@ GeomCurveDual <- ggplot2::ggproto("GeomCurveDual", ggplot2::Geom,
                          required_aes = c("x", "y", "xend", "yend"),
 
                          default_aes = ggplot2::aes(
-                           color = "white",
+                           color1 = "white",
                            color2 = "black",
                            linewidth = 1.2,
                            curvature = 0.3,
@@ -11,13 +11,13 @@ GeomCurveDual <- ggplot2::ggproto("GeomCurveDual", ggplot2::Geom,
                            alpha = 1
                          ),
 
-                         draw_panel = function(data, panel_params, coord, offset = 0.003) {
+                         draw_panel = function(data, panel_params, coord, offset = 0.01) {
                            coords <- coord$transform(data, panel_params)
                            valid <- complete.cases(coords[, c("x", "y", "xend", "yend")])
                            coords <- coords[valid, , drop = FALSE]
                            if (nrow(coords) == 0) return(nullGrob())
 
-                           if (!"color"  %in% names(coords)) coords$color  <- "white"
+                           if (!"color1"  %in% names(coords)) coords$color1  <- "white"
                            if (!"color2" %in% names(coords)) coords$color2 <- "black"
 
                            grobs <- vector("list", nrow(coords) * 2)
@@ -34,29 +34,31 @@ GeomCurveDual <- ggplot2::ggproto("GeomCurveDual", ggplot2::Geom,
                              perp_x <- -dy / len
                              perp_y <-  dx / len
 
-                             x1_off <- row$x    + offset * perp_x
-                             y1_off <- row$y    + offset * perp_y
-                             x2_off <- row$xend + offset * perp_x
-                             y2_off <- row$yend + offset * perp_y
+                             dx_off <- offset * perp_x
+                             dy_off <- offset * perp_y
 
                              # Bottom stroke (drawn first)
                              grobs[[2*i - 1]] <- grid::curveGrob(
-                               x1 = x1_off, y1 = y1_off,
-                               x2 = x2_off, y2 = y2_off,
+                               x1 = row$x    - dx_off,
+                               y1 = row$y    - dy_off,
+                               x2 = row$xend - dx_off,
+                               y2 = row$yend - dy_off,
                                curvature = row$curvature,
                                angle = row$angle,
                                ncp = row$ncp,
-                               gp = grid::gpar(col = row$color2, lwd = row$linewidth * 2.5, alpha = row$alpha)
+                               gp = grid::gpar(col = row$color2, lwd = row$linewidth, alpha = row$alpha)
                              )
 
                              # Top stroke
                              grobs[[2*i]] <- grid::curveGrob(
-                               x1 = row$x, y1 = row$y,
-                               x2 = row$xend, y2 = row$yend,
+                               x1 = row$x    + dx_off,
+                               y1 = row$y    + dy_off,
+                               x2 = row$xend + dx_off,
+                               y2 = row$yend + dy_off,
                                curvature = row$curvature,
                                angle = row$angle,
                                ncp = row$ncp,
-                               gp = grid::gpar(col = row$color, lwd = row$linewidth, alpha = row$alpha)
+                               gp = grid::gpar(col = row$color1, lwd = row$linewidth, alpha = row$alpha)
                              )
                            }
 
@@ -70,7 +72,7 @@ GeomCurveDual <- ggplot2::ggproto("GeomCurveDual", ggplot2::Geom,
 #' with slight perpendicular offset to ensure visibility across mixed backgrounds.
 #'
 #' @inheritParams ggplot2::geom_curve
-#' @param color Color for the top (visible) stroke (default: white).
+#' @param color1 Color for the top (visible) stroke (default: white).
 #' @param color2 Color for the bottom (outline) stroke (default: black).
 #' @param offset Perpendicular offset to visually separate strokes (default: 0.003).
 #' @param curvature Bend of the curve (positive = counter-clockwise).
@@ -110,7 +112,7 @@ GeomCurveDual <- ggplot2::ggproto("GeomCurveDual", ggplot2::Geom,
 #'   geom_curve_dual(
 #'     data = data.frame(x = 1, y = 1, xend = 6, yend = 4),
 #'     aes(x = x, y = y, xend = xend, yend = yend),
-#'     color = "white", color2 = "black",
+#'     color1 = "white", color2 = "black",
 #'     curvature = 0.4, offset = 0.003, linewidth = 2
 #'   ) +
 #'   scale_fill_identity() +
@@ -121,8 +123,8 @@ GeomCurveDual <- ggplot2::ggproto("GeomCurveDual", ggplot2::Geom,
 #' @export
 geom_curve_dual <- function(mapping = NULL, data = NULL,
                             stat = "identity", position = "identity",
-                            ..., offset = 0.01, curvature = 0.3, angle = 90,
-                            ncp = 5, color = "white", color2 = "black",
+                            ..., offset = 0.003, curvature = 0.3, angle = 90,
+                            ncp = 5, color1 = "white", color2 = "black",
                             na.rm = FALSE, show.legend = NA, inherit.aes = TRUE) {
   layer(
     geom = GeomCurveDual,

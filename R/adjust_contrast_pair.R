@@ -16,23 +16,51 @@
 #'
 #' adjust_contrast_pair("#66CCFF", contrast = 4.5, method = "APCA", background = "#FAFAFA")
 #' @export
-adjust_contrast_pair <- function(color, contrast = 4.5, method = "auto", background = "#FFFFFF", quiet = FALSE) {
+adjust_contrast_pair <- function(color, contrast = 4.5, method = "auto",
+                                 background = "#FFFFFF", quiet = FALSE) {
   if (!requireNamespace("colorspace", quietly = TRUE)) {
     stop("Package 'colorspace' is required for contrast adjustment.")
   }
 
   if (!is.character(color) || length(color) != 1 || is.na(color)) {
     warning("Invalid color input.")
-    return(list(light = "#FFFFFF", dark = "#000000", contrast = NA))
+    return(list(light = "#FFFFFF", dark = "#000000", contrast = NA, method = method))
   }
 
-  base_hcl <- tryCatch({
-    as(colorspace::hex2RGB(color), "polarLUV")@coords
-  }, error = function(e) NULL)
+  if (!is.character(background) || length(background) != 1 || is.na(background)) {
+    warning("Invalid background input.")
+    return(list(light = "#FFFFFF", dark = "#000000", contrast = NA, method = method))
+  }
 
-  if (is.null(base_hcl)) {
-    warning(sprintf("Could not convert base color %s to HCL.", color))
-    return(list(light = "#FFFFFF", dark = "#000000", contrast = NA))
+  # Try converting base color to HCL
+  base_hcl <- if (quiet) {
+    tryCatch({
+      suppressWarnings(as(colorspace::hex2RGB(color), "polarLUV")@coords)
+    }, error = function(e) NULL)
+  } else {
+    tryCatch({
+      as(colorspace::hex2RGB(color), "polarLUV")@coords
+    }, error = function(e) {
+      warning(sprintf("Could not convert base color %s to HCL.", color))
+      NULL
+    })
+  }
+
+  if (is.null(base_hcl) || !is.numeric(base_hcl) || length(base_hcl) < 2) {
+    return(list(light = "#FFFFFF", dark = "#000000", contrast = NA, method = method))
+  }
+
+  # Validate background early using col2rgb
+  valid_bg <- tryCatch({
+    grDevices::col2rgb(background)
+    TRUE
+  }, error = function(e) {
+    if (!quiet) warning(sprintf("Invalid background color: %s", background))
+    FALSE
+  })
+
+  if (!valid_bg) {
+    return(list(light = "#FFFFFF", dark = "#000000", contrast = NA, method = method))
   }
 
   h <- base_hcl[1]; c <- base_hcl[2]
