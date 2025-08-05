@@ -20,24 +20,26 @@ GeomSegmentDual <- ggplot2::ggproto("GeomSegmentDual", ggplot2::Geom,
                                       pt_height = grid::convertHeight(unit(.5 * .pt, "pt"), "npc", valueOnly = TRUE)
 
                                       coords <- coords |> dplyr::mutate(
-                                        dx = (xend - x),
-                                        dy = (yend - y),
+                                        dx = abs(xend - x)/pt_width,
+                                        dy = abs(yend - y)/pt_height,
+                                        # slope of segment is dy/dx
+                                        # slope of orthogonal segment is (-1)*dx/dy
                                         len = sqrt(dx^2+dy^2),
-                                        angle = asin(dy/len),
-                                        offset_x = linewidth/2*pt_width*sin(angle),
-                                        offset_y = linewidth/2*pt_height*cos(angle)
+                         #               angle = asin(dy/len),
+                                        offset_x = pt_width*linewidth/2*dy/len,
+                                        offset_y = pt_height*linewidth/2*dx/len
                                       )
 
                                       data1 <- coords  # top stroke
                                       data2 <- coords  # bottom stroke
                                       data1$x    <- data1$x + data1$offset_x
                                       data1$xend <- data1$xend + data1$offset_x
-                                      data1$y    <- data1$y - sign(data1$dx)*data1$offset_y
-                                      data1$yend <- data1$yend - sign(data1$dx)* data1$offset_y
+                                      data1$y    <- data1$y - data1$offset_y
+                                      data1$yend <- data1$yend - data1$offset_y
                                       data2$x    <- data2$x - data2$offset_x
                                       data2$xend <- data2$xend - data2$offset_x
-                                      data2$y    <- data2$y + sign(data1$dx)* data2$offset_y
-                                      data2$yend <- data2$yend + sign(data1$dx)* data2$offset_y
+                                      data2$y    <- data2$y +  data2$offset_y
+                                      data2$yend <- data2$yend + data2$offset_y
                                       coords1 <- data1 #coord$transform(data1, panel_params)
                                       coords2 <- data2 #coord$transform(data2, panel_params)
 
@@ -54,7 +56,7 @@ GeomSegmentDual <- ggplot2::ggproto("GeomSegmentDual", ggplot2::Geom,
                                           lwd = (coords2$linewidth * 0.5) * .pt,
                                           lty = coords2$linetype,
                                           alpha = alpha2,
-                                          lineend = lineend
+                                          lineend = "butt"
                                         ),
                                         arrow = arrow
                                       )
@@ -68,7 +70,7 @@ GeomSegmentDual <- ggplot2::ggproto("GeomSegmentDual", ggplot2::Geom,
                                           lwd = (coords1$linewidth * 0.5) * .pt,
                                           lty = coords1$linetype,
                                           alpha = alpha1,
-                                          lineend = lineend
+                                          lineend = "butt"
                                         ),
                                         arrow = arrow
                                       )
