@@ -1,82 +1,74 @@
-GeomSegmentDual <- ggplot2::ggproto("GeomSegmentDual", ggplot2::Geom,
-                                    required_aes = c("x", "y", "xend", "yend"),
-                                    default_aes = ggplot2::aes(
-                                      color1 = "black",
-                                      color2 = "white",
-                                      linewidth = 0.5,
-                                      linetype = 1,
-                                      alpha = NA
-                                    ),
-                                    draw_key = ggplot2::draw_key_path,
+# Grob for drawing a line segment in two (contrasting) colors side by side
+two_color_segment_grob <- function(x0, y0, x1, y1, col1, col2, lwd, lineend, arrow, arrow.fill) {
+  # Adjust dy by aspect ratio to compensate for scaling difference
+  dx <- x1 - x0
+  dy <- (y1 - y0)
 
-                                    draw_panel = function(self, data, panel_params, coord, arrow = NULL,
-                                                          arrow.fill = NULL, lineend = "butt", linejoin = "round",
-                                                          na.rm = FALSE) {
+  len <- sqrt(dx^2 + dy^2)
+  perp_x <- -dy / len
+  perp_y <- dx / len
 
 
-                                      coords <- coord$transform(data, panel_params)
+  offset_amt <- 0.8*lwd / 4 # add 10percent to avoid gaps due to rounding problems with pixels
+  offset_x <-perp_x * offset_amt
+  offset_y <-perp_y * offset_amt
 
-                                      pt_width = grid::convertWidth(unit(.5 * .pt, "pt"), "npc", valueOnly = TRUE)
-                                      pt_height = grid::convertHeight(unit(.5 * .pt, "pt"), "npc", valueOnly = TRUE)
+  right_line <- segmentsGrob(
+    x0 = unit(x0, "npc") - unit(offset_x, "pt"),
+    y0 = unit(y0, "npc") - unit(offset_y, "pt"),
+    x1 = unit(x1, "npc") - unit(offset_x, "pt"),
+    y1 = unit(y1, "npc") - unit(offset_y, "pt"),
+    gp = gpar(col = col1, lwd = lwd / 2, lineend = lineend, fill = arrow.fill %||% col1),
+    arrow = arrow
+  )
+  left_line <- segmentsGrob(
+    x0 = unit(x0, "npc") + unit(offset_x, "pt"),
+    y0 = unit(y0, "npc") + unit(offset_y, "pt"),
+    x1 = unit(x1, "npc") + unit(offset_x, "pt"),
+    y1 = unit(y1, "npc") + unit(offset_y, "pt"),
+    gp = gpar(col = col2, lwd = lwd / 2, lineend = lineend, fill = arrow.fill %||% col2),
+    arrow = arrow
+  )
+  grid::gTree(children = grid::gList(right_line, left_line))
+}
 
-                                      coords <- coords |> dplyr::mutate(
-                                        dx = abs(xend - x)/pt_width,
-                                        dy = abs(yend - y)/pt_height,
-                                        # slope of segment is dy/dx
-                                        # slope of orthogonal segment is (-1)*dx/dy
-                                        len = sqrt(dx^2+dy^2),
-                         #               angle = asin(dy/len),
-                                        offset_x = pt_width*linewidth/2*dy/len,
-                                        offset_y = pt_height*linewidth/2*dx/len
-                                      )
+GeomSegmentDual <- ggplot2::ggproto(
+  "GeomSegmentDual", ggplot2::Geom,
+  required_aes = c("x", "y", "xend", "yend"),
+  default_aes = ggplot2::aes(
+    color1 = "black",
+    color2 = "white",
+    linewidth = ggplot2::from_theme(linewidth),
+    linetype = ggplot2::from_theme(linetype),
+    alpha = NA
+  ),
+  draw_key = ggplot2::draw_key_path,
 
-                                      data1 <- coords  # top stroke
-                                      data2 <- coords  # bottom stroke
-                                      data1$x    <- data1$x + data1$offset_x
-                                      data1$xend <- data1$xend + data1$offset_x
-                                      data1$y    <- data1$y - data1$offset_y
-                                      data1$yend <- data1$yend - data1$offset_y
-                                      data2$x    <- data2$x - data2$offset_x
-                                      data2$xend <- data2$xend - data2$offset_x
-                                      data2$y    <- data2$y +  data2$offset_y
-                                      data2$yend <- data2$yend + data2$offset_y
-                                      coords1 <- data1 #coord$transform(data1, panel_params)
-                                      coords2 <- data2 #coord$transform(data2, panel_params)
+  draw_panel = function(data, panel_params, coord,
+                        lineend = "butt", arrow = NULL, arrow.fill = NULL) {
 
+    coords <- coord$transform(data, panel_params)
+    browser()
 
-                                      alpha1 <- if (all(is.na(coords1$alpha))) NULL else coords1$alpha
-                                      alpha2 <- if (all(is.na(coords2$alpha))) NULL else coords2$alpha
+    grobs <- lapply(seq_len(nrow(coords)), function(i) {
+      row <- coords[i, , drop = FALSE]
+      # Convert linewidth to lwd (pt) for grid
+      lwd <- row$linewidth * .pt
 
-                                      # Bottom stroke (darker, drawn first and slightly thicker)
-                                      s2 <- grid::segmentsGrob(
-                                        x0 = coords2$x, x1 = coords2$xend,
-                                        y0 = coords2$y, y1 = coords2$yend,
-                                        gp = grid::gpar(
-                                          col = coords2$colour2,
-                                          lwd = (coords2$linewidth * 0.5) * .pt,
-                                          lty = coords2$linetype,
-                                          alpha = alpha2,
-                                          lineend = "butt"
-                                        ),
-                                        arrow = arrow
-                                      )
+      two_color_segment_grob(
+        x0 = row$x, y0 = row$y,
+        x1 = row$xend, y1 = row$yend,
+        col1 = row$colour1,
+        col2 = row$colour2,
+        lwd = lwd,
+        lineend = lineend,
+        arrow = arrow,
+        arrow.fill = arrow.fill
+      )
+    })
 
-                                      # Top stroke (lighter)
-                                      s1 <- grid::segmentsGrob(
-                                        x0 = coords1$x, x1 = coords1$xend,
-                                        y0 = coords1$y, y1 = coords1$yend,
-                                        gp = grid::gpar(
-                                          col = coords1$colour1,
-                                          lwd = (coords1$linewidth * 0.5) * .pt,
-                                          lty = coords1$linetype,
-                                          alpha = alpha1,
-                                          lineend = "butt"
-                                        ),
-                                        arrow = arrow
-                                      )
-
-                                      grid::gList(s2, s1)
-                                    }
+    grobTree(children = do.call(gList, grobs))
+  }
 )
 
 #' Dual-Stroke Line Segments with Vertical Offset
@@ -95,11 +87,10 @@ GeomSegmentDual <- ggplot2::ggproto("GeomSegmentDual", ggplot2::Geom,
 #'
 #'
 #' @examples
-#' library(ggplot2)
 #' # Simple black background test
 #' ggplot(data.frame(x = 1, xend = 2, y = 1, yend = 2),
 #'        aes(x = x, y = y, xend = xend, yend = yend)) +
-#'   geom_segment_dual(color1 = "white", color2 = "black", linewidth = 1.5) +
+#'   geom_segment_dual(color1 = "white", color2 = "black", linewidth = 2) +
 #'   theme_void() +
 #'   theme(panel.background = element_rect(fill = "gray20"))
 #'
@@ -163,8 +154,8 @@ GeomSegmentDual <- ggplot2::ggproto("GeomSegmentDual", ggplot2::Geom,
 geom_segment_dual <- function(mapping = NULL, data = NULL,
                               stat = "identity", position = "identity",
                               color1 = NULL, color2 = NULL, linewidth = NULL,
+                              lineend = "butt",
                               ..., arrow = NULL, arrow.fill = NULL,
-                              lineend = "butt", linejoin = "round",
                               na.rm = FALSE, show.legend = NA, inherit.aes = TRUE) {
   layer(
     geom = GeomSegmentDual, mapping = mapping, data = data, stat = stat,
@@ -174,7 +165,6 @@ geom_segment_dual <- function(mapping = NULL, data = NULL,
       arrow.fill = arrow.fill,
       lineend = lineend,
       linewidth = linewidth,
-      linejoin = linejoin,
       color1 = color1,
       color2 = color2,
       na.rm = na.rm,
