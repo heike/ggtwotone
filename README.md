@@ -44,8 +44,8 @@ pak::pak("bwanniarachchige2/ggtwotone")
 These are some examples which show you how to use the package:
 
 ``` r
-library(ggplot2)
-library(ggtwotone)
+library(ggtwotone) # automatically loads ggplot2 if it is not active
+#> Loading required package: ggplot2
 library(magick)
 #> Linking to ImageMagick 6.9.12.93
 #> Enabled features: cairo, fontconfig, freetype, heic, lcms, pango, raw, rsvg, webp
@@ -145,7 +145,7 @@ ggplot() +
   geom_segment_dual(
     data = wind_df,
     aes(x = x, y = y, xend = xend, yend = yend),
-    color1 = "#FFFFFF", color2 = "#111111",
+#    colour1 = "#FFFFFF", colour2 = "#111111",
     linewidth = 1.2,
     arrow = arrow(length = unit(0.15, "inches"), type = "open"),
     alpha = 0.9
@@ -162,6 +162,8 @@ ggplot() +
     x = "Longitude",
     y = "Latitude"
   )
+#> Warning in geom_segment_dual(data = wind_df, aes(x = x, y = y, xend = xend, :
+#> Ignoring empty aesthetics: `colour1` and `colour2`.
 ```
 
 <img src="man/figures/README-example2-1.png" width="100%" />
@@ -200,6 +202,9 @@ ggplot(df, aes(x = displ, y = hwy)) +
     x = "Displacement (L)",
     y = "Highway MPG"
   )
+#> Warning: Duplicated aesthetics after name standardisation: colour1 and colour2
+#> Warning in geom_segment_dual(data = reg_segment, mapping = aes(x = x, y = y, :
+#> Ignoring empty aesthetics: `colour1` and `colour2`.
 ```
 
 <img src="man/figures/README-example3-1.png" width="100%" />
@@ -235,6 +240,9 @@ ggplot(storm_subset) +
     x = "Longitude", y = "Latitude"
   ) +
   theme_dark()
+#> Warning: Duplicated aesthetics after name standardisation: colour1 and colour2
+#> Warning in geom_segment_dual(aes(x = x, y = y, xend = xend, yend = yend, :
+#> Ignoring empty aesthetics: `colour1` and `colour2`.
 ```
 
 <img src="man/figures/README-example4-1.png" width="100%" />
@@ -248,14 +256,16 @@ coior hues has a sufficiently large (color) contrast to any background
 colors.
 
 ``` r
-dframe <- data.frame(x =c(1,3,5), xmax = c(2, 4, 6), y = c(3,2,1), ymax=c(3,4,5), group = 1:3)
+dframe <- data.frame(x =c(1,3,5), xmax = c(2, 4, 6), y = c(3,2,1), ymax=c(3,4,5), group = 4:6)
 dframe |> 
   ggplot(aes(x = x, xend=xmax, y = y, yend=ymax)) + 
   geom_point(size = 5) + 
   geom_point(aes(x = xmax, y = ymax), size = 5) +
   geom_segment(aes(group = group), linewidth = 20, alpha = 0.5) +
-  geom_segment_dual(aes(group = group), color1 = "darkorange", color2 = "steelblue", linewidth = 20, alpha = 0.5) +
+  geom_segment_dual(aes(group = group, color1 = factor(group)), linewidth = 20, alpha = 0.5) +
   theme_bw() + theme(aspect.ratio = 1/3) #+ 
+#> Warning in geom_segment_dual(aes(group = group, color1 = factor(group)), :
+#> Ignoring empty aesthetics: `colour1` and `colour2`.
 ```
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
