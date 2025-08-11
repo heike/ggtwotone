@@ -1,17 +1,19 @@
 # Grob for drawing a line segment in two (contrasting) colors side by side
 two_color_segment_grob <- function(x0, y0, x1, y1, col1, col2, lwd, lineend, arrow, arrow.fill) {
-  # Adjust dy by aspect ratio to compensate for scaling difference
-  dx <- x1 - x0
-  dy <- (y1 - y0)
+  # consider current view port size for the initial creation
+  # very differently shaped view ports are going to show subtle differences
+  dx <-  grid::convertWidth(unit(x1 - x0, "npc"), "pt", valueOnly = TRUE)
+  dy <- grid::convertHeight(unit((y1 - y0) , "npc"), "pt", valueOnly = TRUE)
 
   len <- sqrt(dx^2 + dy^2)
-  perp_x <- -dy / len
+  perp_x <- -dy / len   # in data scale
   perp_y <- dx / len
 
 
-  offset_amt <- 0.8*lwd / 4 # add 10percent to avoid gaps due to rounding problems with pixels
-  offset_x <-perp_x * offset_amt
-  offset_y <-perp_y * offset_amt
+  offset_amt <- 0.75 * lwd / 4 # in points # add an additional 25% to avoid gaps
+  offset_x <- unit(perp_x * offset_amt,  "pt") # works for a square display
+  offset_y <- unit(perp_y * offset_amt,  "pt")
+
 
   right_line <- segmentsGrob(
     x0 = unit(x0, "npc") - unit(offset_x, "pt"),
@@ -48,7 +50,10 @@ GeomSegmentDual <- ggplot2::ggproto(
                         lineend = "butt", arrow = NULL, arrow.fill = NULL) {
 
     coords <- coord$transform(data, panel_params)
-    browser()
+
+    #vp_width_in <- convertWidth(unit(1, "npc"), "in", valueOnly = TRUE)
+    #vp_height_in <- convertHeight(unit(1, "npc"), "in", valueOnly = TRUE)
+
 
     grobs <- lapply(seq_len(nrow(coords)), function(i) {
       row <- coords[i, , drop = FALSE]
@@ -58,8 +63,8 @@ GeomSegmentDual <- ggplot2::ggproto(
       two_color_segment_grob(
         x0 = row$x, y0 = row$y,
         x1 = row$xend, y1 = row$yend,
-        col1 = row$colour1,
-        col2 = row$colour2,
+        col1 = alpha(row$colour1, row$alpha),
+        col2 = alpha(row$colour2, row$alpha),
         lwd = lwd,
         lineend = lineend,
         arrow = arrow,
@@ -154,7 +159,7 @@ GeomSegmentDual <- ggplot2::ggproto(
 geom_segment_dual <- function(mapping = NULL, data = NULL,
                               stat = "identity", position = "identity",
                               color1 = NULL, color2 = NULL, linewidth = NULL,
-                              lineend = "butt",
+                              lineend = "butt", aspect_ratio = 1,
                               ..., arrow = NULL, arrow.fill = NULL,
                               na.rm = FALSE, show.legend = NA, inherit.aes = TRUE) {
   layer(
