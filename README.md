@@ -150,7 +150,6 @@ ggplot() +
     arrow = arrow(length = unit(0.15, "inches"), type = "open"),
     alpha = 0.9
   ) +
-
   coord_fixed(xlim = range(c(wind_df$x, wind_df$xend)),
             ylim = range(c(wind_df$y, wind_df$yend))) +
   theme_minimal(base_size = 14) +
@@ -252,25 +251,19 @@ colors.
 dframe <- data.frame(x =c(1,3,5), xmax = c(2, 4, 6), y = c(3,2,1), ymax=c(3,4,5), group = 1:3)
 dframe |> 
   ggplot(aes(x = x, xend=xmax, y = y, yend=ymax)) + 
-  geom_segment(aes(group = group), linewidth = 10, alpha = 0.5) +
-  theme_bw() + 
   geom_point(size = 5) + 
-  geom_point(aes(x = xmax, y = ymax), size = 5)
+  geom_point(aes(x = xmax, y = ymax), size = 5) +
+  geom_segment(aes(group = group), linewidth = 20, alpha = 0.5) +
+  geom_segment_dual(aes(group = group), color1 = "darkorange", color2 = "steelblue", linewidth = 20, alpha = 0.5) +
+  theme_bw() + theme(aspect.ratio = 1/3) #+ 
 ```
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
 
 ``` r
-
-dframe |> 
-  ggplot(aes(x = x, xend=xmax, y = y, yend=ymax)) + 
-  geom_segment_dual(aes(group = group), color1 = "darkorange", color2 = "steelblue", linewidth = 10, alpha = 0.5) +
-  theme_bw() + 
-  geom_point(size = 5) + 
-  geom_point(aes(x = xmax, y = ymax), size = 5)
+#  geom_point(size = 5) + 
+#  geom_point(aes(x = xmax, y = ymax), size = 5)
 ```
-
-<img src="man/figures/README-unnamed-chunk-2-2.png" width="100%" />
 
 # Motivation
 
