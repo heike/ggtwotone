@@ -1,5 +1,5 @@
-# Grob for drawing a line segment in two (contrasting) colors side by side
-two_color_segment_grob <- function(x0, y0, x1, y1, col1, col2, lwd, lineend, arrow, arrow.fill) {
+# Grob for drawing a line segment in two (contrasting) colours side by side
+two_colour_segment_grob <- function(x0, y0, x1, y1, col1, col2, lwd, lineend, arrow, arrow.fill) {
   # consider current view port size for the initial creation
   # very differently shaped view ports are going to show subtle differences
   dx <-  grid::convertWidth(unit(x1 - x0, "npc"), "pt", valueOnly = TRUE)
@@ -38,8 +38,8 @@ GeomSegmentDual <- ggplot2::ggproto(
   "GeomSegmentDual", ggplot2::Geom,
   required_aes = c("x", "y", "xend", "yend"),
   default_aes = ggplot2::aes(
-    color1 = "black",
-    color2 = "white",
+    colour1 = adjust_contrast_pair("#303030")$dark,
+    colour2 = adjust_contrast_pair("#303030")$light,
     linewidth = ggplot2::from_theme(linewidth),
     linetype = ggplot2::from_theme(linetype),
     alpha = NA
@@ -60,7 +60,7 @@ GeomSegmentDual <- ggplot2::ggproto(
       # Convert linewidth to lwd (pt) for grid
       lwd <- row$linewidth * .pt
 
-      two_color_segment_grob(
+      two_colour_segment_grob(
         x0 = row$x, y0 = row$y,
         x1 = row$xend, y1 = row$yend,
         col1 = alpha(row$colour1, row$alpha),
@@ -78,16 +78,16 @@ GeomSegmentDual <- ggplot2::ggproto(
 
 #' Dual-Stroke Line Segments with Vertical Offset
 #'
-#' Draws two vertically offset line segments with separate colors,
+#' Draws two vertically offset line segments with separate colours,
 #' for visibility on varied backgrounds.
 #'
 #' @title Dual-Stroke Line Segments with Vertical Offset
-#' @description Draws two vertically offset line segments with separate colors,
+#' @description Draws two vertically offset line segments with separate colours,
 #' for visibility on varied backgrounds.
 #'
 #' @inheritParams ggplot2::geom_segment
-#' @param color1 Color for the top (upward-shifted) stroke.
-#' @param color2 Color for the bottom (downward-shifted) stroke.
+#' @param colour1 colour for the top (upward-shifted) stroke.
+#' @param colour2 colour for the bottom (downward-shifted) stroke.
 #' @param linewidth Width of each line stroke (in mm).
 #'
 #'
@@ -95,7 +95,7 @@ GeomSegmentDual <- ggplot2::ggproto(
 #' # Simple black background test
 #' ggplot(data.frame(x = 1, xend = 2, y = 1, yend = 2),
 #'        aes(x = x, y = y, xend = xend, yend = yend)) +
-#'   geom_segment_dual(color1 = "white", color2 = "black", linewidth = 2) +
+#'   geom_segment_dual(colour1 = "white", colour2 = "black", linewidth = 2) +
 #'   theme_void() +
 #'   theme(panel.background = element_rect(fill = "gray20"))
 #'
@@ -113,8 +113,8 @@ GeomSegmentDual <- ggplot2::ggproto(
 #'   y = c(1, 1),
 #'   xend = c(9, 1),
 #'   yend = c(4, 4),
-#'   color1 = c("#D9D9D9", "#D9D9D9"),  # light stroke
-#'   color2 = c("#333333", "#333333")   # dark stroke
+#'   colour1 = c("#D9D9D9", "#D9D9D9"),  # light stroke
+#'   colour2 = c("#333333", "#333333")   # dark stroke
 #' )
 #'
 #' ggplot() +
@@ -125,8 +125,8 @@ GeomSegmentDual <- ggplot2::ggproto(
 #'   geom_segment_dual(
 #'     data = line_data,
 #'     aes(x = x, y = y, xend = xend, yend = yend),
-#'     color1 = line_data$color1,
-#'     color2 = line_data$color2,
+#'     colour1 = line_data$colour1,
+#'     colour2 = line_data$colour2,
 #'     linewidth = 1,
 #'     inherit.aes = FALSE
 #'   ) +
@@ -140,16 +140,16 @@ GeomSegmentDual <- ggplot2::ggproto(
 #'   xend = c(2, 3, 4),
 #'   y = c(1, 2, 1),
 #'   yend = c(2, 1, 2),
-#'   color1 = rep("white", 3),
-#'   color2 = rep("black", 3),
+#'   colour1 = rep("white", 3),
+#'   colour2 = rep("black", 3),
 #'   group = factor(c("A", "B", "C"))
 #' )
 #'
 #' ggplot(df) +
 #'   geom_segment_dual(
 #'     aes(x = x, y = y, xend = xend, yend = yend, group = group),
-#'     color1 = df$color1,
-#'     color2 = df$color2,
+#'     colour1 = df$colour1,
+#'     colour2 = df$colour2,
 #'     linewidth = 1,
 #'     arrow = arrow(length = unit(0.15, "inches"), type = "closed")
 #'   ) +
@@ -158,7 +158,7 @@ GeomSegmentDual <- ggplot2::ggproto(
 #' @export
 geom_segment_dual <- function(mapping = NULL, data = NULL,
                               stat = "identity", position = "identity",
-                              color1 = NULL, color2 = NULL, linewidth = NULL,
+                              colour1 = NULL, colour2 = NULL, linewidth = NULL,
                               lineend = "butt", aspect_ratio = 1,
                               ..., arrow = NULL, arrow.fill = NULL,
                               na.rm = FALSE, show.legend = NA, inherit.aes = TRUE) {
@@ -170,8 +170,8 @@ geom_segment_dual <- function(mapping = NULL, data = NULL,
       arrow.fill = arrow.fill,
       lineend = lineend,
       linewidth = linewidth,
-      color1 = color1,
-      color2 = color2,
+      colour1 = colour1,
+      colour2 = colour2,
       na.rm = na.rm,
       ...
     )
