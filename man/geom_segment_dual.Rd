@@ -9,8 +9,8 @@ geom_segment_dual(
   data = NULL,
   stat = "identity",
   position = "identity",
-  color1 = NULL,
-  color2 = NULL,
+  colour1 = NULL,
+  colour2 = NULL,
   linewidth = NULL,
   lineend = "butt",
   aspect_ratio = 1,
@@ -69,13 +69,15 @@ to use \code{position_jitter()}, give the position as \code{"jitter"}.
 \link[ggplot2:layer_positions]{layer position} documentation.
 }}
 
-\item{color1}{Color for the top (upward-shifted) stroke.}
+\item{colour1}{colour for the top (upward-shifted) stroke.}
 
-\item{color2}{Color for the bottom (downward-shifted) stroke.}
+\item{colour2}{colour for the bottom (downward-shifted) stroke.}
 
 \item{linewidth}{Width of each line stroke (in mm).}
 
 \item{lineend}{Line end style (round, butt, square).}
+
+\item{aspect_ratio}{Aspect ratio hint (currently unused by the grob logic but reserved for future layout tuning).}
 
 \item{...}{Other arguments passed on to \code{\link[ggplot2:layer]{layer()}}'s \code{params} argument. These
 arguments broadly fall into one of 4 categories below. Notably, further
@@ -127,20 +129,20 @@ that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link[ggplot2:annotation_borders]{annotation_borders()}}.}
 }
 \description{
-Draws two vertically offset line segments with separate colors,
+Draws two vertically offset line segments with separate colours,
 for visibility on varied backgrounds.
 }
 \details{
 Dual-Stroke Line Segments with Vertical Offset
 
-Draws two vertically offset line segments with separate colors,
+Draws two vertically offset line segments with separate colours,
 for visibility on varied backgrounds.
 }
 \examples{
 # Simple black background test
 ggplot(data.frame(x = 1, xend = 2, y = 1, yend = 2),
        aes(x = x, y = y, xend = xend, yend = yend)) +
-  geom_segment_dual(color1 = "white", color2 = "black", linewidth = 2) +
+  geom_segment_dual(colour1 = "white", colour2 = "black", linewidth = 2) +
   theme_void() +
   theme(panel.background = element_rect(fill = "gray20"))
 
@@ -158,8 +160,8 @@ line_data <- data.frame(
   y = c(1, 1),
   xend = c(9, 1),
   yend = c(4, 4),
-  color1 = c("#D9D9D9", "#D9D9D9"),  # light stroke
-  color2 = c("#333333", "#333333")   # dark stroke
+  colour1 = c("#D9D9D9", "#D9D9D9"),  # light stroke
+  colour2 = c("#333333", "#333333")   # dark stroke
 )
 
 ggplot() +
@@ -170,8 +172,8 @@ ggplot() +
   geom_segment_dual(
     data = line_data,
     aes(x = x, y = y, xend = xend, yend = yend),
-    color1 = line_data$color1,
-    color2 = line_data$color2,
+    colour1 = line_data$colour1,
+    colour2 = line_data$colour2,
     linewidth = 1,
     inherit.aes = FALSE
   ) +
@@ -185,16 +187,16 @@ df <- data.frame(
   xend = c(2, 3, 4),
   y = c(1, 2, 1),
   yend = c(2, 1, 2),
-  color1 = rep("white", 3),
-  color2 = rep("black", 3),
+  colour1 = rep("white", 3),
+  colour2 = rep("black", 3),
   group = factor(c("A", "B", "C"))
 )
 
 ggplot(df) +
   geom_segment_dual(
     aes(x = x, y = y, xend = xend, yend = yend, group = group),
-    color1 = df$color1,
-    color2 = df$color2,
+    colour1 = df$colour1,
+    colour2 = df$colour2,
     linewidth = 1,
     arrow = arrow(length = unit(0.15, "inches"), type = "closed")
   ) +

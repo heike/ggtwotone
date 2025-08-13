@@ -43,12 +43,24 @@
 #'   merge(fill_colors, by = "x")
 #'
 #' ggplot() +
-#'   geom_tile(data = tiles, aes(x = x, y = y, fill = fill), width = 1, height = 10) +
+#'   geom_tile(
+#'     data = tiles, aes(x = x, y = y, fill = fill),
+#'     width = 1, height = 10
+#'   ) +
 #'   scale_fill_identity() +
-#'   geom_point(data = df1, aes(x = x, y = y),  colour = "purple", size = 2) +
-#'  ## uncomment for using points with frames
-#'  #  geom_point(data = df1, aes(x = x, y = y), shape = 21, colour = "white", fill = "black", size = 3) +
-#'   geom_lm_dual(data = df1, mapping = aes(x = x, y = y), linewidth = 2) +
+#'   geom_point(
+#'     data = df1, aes(x = x, y = y),
+#'     colour = "purple", size = 2
+#'   ) +
+#'   ## Uncomment to use points with frames:
+#'   # geom_point(
+#'   #   data = df1, aes(x = x, y = y),
+#'   #   shape = 21, colour = "white", fill = "black", size = 3
+#'   # ) +
+#'   geom_lm_dual(
+#'     data = df1, mapping = aes(x = x, y = y),
+#'     linewidth = 2
+#'   ) +
 #'   coord_fixed() +
 #'   theme_minimal()
 #' @export
@@ -60,7 +72,7 @@ geom_lm_dual <- function(data, mapping, method = "lm", formula = y ~ x,
   x_var <- rlang::as_name(mapping$x)
   y_var <- rlang::as_name(mapping$y)
 
-  model <- lm(formula, data = data)
+  model <- stats::lm(formula, data = data)
   x_range <- range(data[[x_var]], na.rm = TRUE)
   new_data <- data.frame(x = x_range)
   names(new_data) <- x_var
@@ -72,16 +84,14 @@ geom_lm_dual <- function(data, mapping, method = "lm", formula = y ~ x,
     x = x_range[1],
     y = y_pred[1],
     xend = x_range[2],
-    yend = y_pred[2],
-    color1 = cp$light,
-    color2 = cp$dark
+    yend = y_pred[2]
   )
 
   geom_segment_dual(
     data = reg_segment,
     mapping = aes(x = x, y = y, xend = xend, yend = yend),
-    color1 = cp$light,
-    color2 = cp$dark,
+    colour1 = cp$light,
+    colour2 = cp$dark,
     linewidth = linewidth,
     inherit.aes = FALSE,
     show.legend = show.legend,

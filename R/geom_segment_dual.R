@@ -89,6 +89,7 @@ GeomSegmentDual <- ggplot2::ggproto(
 #' @param colour1 colour for the top (upward-shifted) stroke.
 #' @param colour2 colour for the bottom (downward-shifted) stroke.
 #' @param linewidth Width of each line stroke (in mm).
+#' @param aspect_ratio Aspect ratio hint (currently unused by the grob logic but reserved for future layout tuning).
 #'
 #'
 #' @examples

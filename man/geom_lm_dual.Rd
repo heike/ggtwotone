@@ -72,12 +72,24 @@ tiles <- expand.grid(x = 1:11, y = seq(0, 1, length.out = 100)) |>
   merge(fill_colors, by = "x")
 
 ggplot() +
-  geom_tile(data = tiles, aes(x = x, y = y, fill = fill), width = 1, height = 10) +
+  geom_tile(
+    data = tiles, aes(x = x, y = y, fill = fill),
+    width = 1, height = 10
+  ) +
   scale_fill_identity() +
-  geom_point(data = df1, aes(x = x, y = y),  colour = "purple", size = 2) +
- ## uncomment for using points with frames
- #  geom_point(data = df1, aes(x = x, y = y), shape = 21, colour = "white", fill = "black", size = 3) +
-  geom_lm_dual(data = df1, mapping = aes(x = x, y = y), linewidth = 2) +
+  geom_point(
+    data = df1, aes(x = x, y = y),
+    colour = "purple", size = 2
+  ) +
+  ## Uncomment to use points with frames:
+  # geom_point(
+  #   data = df1, aes(x = x, y = y),
+  #   shape = 21, colour = "white", fill = "black", size = 3
+  # ) +
+  geom_lm_dual(
+    data = df1, mapping = aes(x = x, y = y),
+    linewidth = 2
+  ) +
   coord_fixed() +
   theme_minimal()
 }
