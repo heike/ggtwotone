@@ -12,11 +12,11 @@ geom_segment_dual(
   color1 = NULL,
   color2 = NULL,
   linewidth = NULL,
+  lineend = "butt",
+  aspect_ratio = 1,
   ...,
   arrow = NULL,
   arrow.fill = NULL,
-  lineend = "butt",
-  linejoin = "round",
   na.rm = FALSE,
   show.legend = NA,
   inherit.aes = TRUE
@@ -45,7 +45,7 @@ from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
 
 \item{stat}{The statistical transformation to use on the data for this layer.
 When using a \verb{geom_*()} function to construct a layer, the \code{stat}
-argument can be used the override the default coupling between geoms and
+argument can be used to override the default coupling between geoms and
 stats. The \code{stat} argument accepts the following:
 \itemize{
 \item A \code{Stat} ggproto subclass, for example \code{StatCount}.
@@ -74,6 +74,8 @@ to use \code{position_jitter()}, give the position as \code{"jitter"}.
 \item{color2}{Color for the bottom (downward-shifted) stroke.}
 
 \item{linewidth}{Width of each line stroke (in mm).}
+
+\item{lineend}{Line end style (round, butt, square).}
 
 \item{...}{Other arguments passed on to \code{\link[ggplot2:layer]{layer()}}'s \code{params} argument. These
 arguments broadly fall into one of 4 categories below. Notably, further
@@ -108,10 +110,6 @@ lists which parameters it can accept.
 \item{arrow.fill}{fill colour to use for the arrow head (if closed). \code{NULL}
 means use \code{colour} aesthetic.}
 
-\item{lineend}{Line end style (round, butt, square).}
-
-\item{linejoin}{Line join style (round, mitre, bevel).}
-
 \item{na.rm}{If \code{FALSE}, the default, missing values are removed with
 a warning. If \code{TRUE}, missing values are silently removed.}
 
@@ -119,12 +117,14 @@ a warning. If \code{TRUE}, missing values are silently removed.}
 \code{NA}, the default, includes if any aesthetics are mapped.
 \code{FALSE} never includes, and \code{TRUE} always includes.
 It can also be a named logical vector to finely select the aesthetics to
-display.}
+display. To include legend keys for all levels, even
+when no data exists, use \code{TRUE}.  If \code{NA}, all levels are shown in legend,
+but unobserved levels are omitted.}
 
 \item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
-the default plot specification, e.g. \code{\link[ggplot2:borders]{borders()}}.}
+the default plot specification, e.g. \code{\link[ggplot2:annotation_borders]{annotation_borders()}}.}
 }
 \description{
 Draws two vertically offset line segments with separate colors,
@@ -137,11 +137,10 @@ Draws two vertically offset line segments with separate colors,
 for visibility on varied backgrounds.
 }
 \examples{
-library(ggplot2)
 # Simple black background test
 ggplot(data.frame(x = 1, xend = 2, y = 1, yend = 2),
        aes(x = x, y = y, xend = xend, yend = yend)) +
-  geom_segment_dual(color1 = "white", color2 = "black", linewidth = 1.5) +
+  geom_segment_dual(color1 = "white", color2 = "black", linewidth = 2) +
   theme_void() +
   theme(panel.background = element_rect(fill = "gray20"))
 
