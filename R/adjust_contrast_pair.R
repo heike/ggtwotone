@@ -63,9 +63,10 @@ adjust_contrast_pair <- function(color, contrast = 4.5, method = "auto",
     return(list(light = "#FFFFFF", dark = "#000000", contrast = NA, method = method))
   }
 
-  h <- base_hcl[1]; c <- base_hcl[2]
+  names_hcl <- colnames(base_hcl)
+  h <- base_hcl[names_hcl=="H"]; c <- base_hcl[names_hcl=="C"]
   try_l <- seq(20, 95, by = 5)
-  candidates <- colorspace::hex(colorspace::polarLUV(L = try_l, C = c, H = h))
+  candidates <- colorspace::hex(colorspace::polarLUV(L = try_l, C = c, H = h), fixup = TRUE)
 
   get_contrast <- function(fg, bg, method) {
     result <- tryCatch({

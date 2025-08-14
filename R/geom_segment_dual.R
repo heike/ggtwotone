@@ -37,10 +37,10 @@ two_colour_segment_grob <- function(x0, y0, x1, y1, col1, col2, lwd, lineend, ar
 GeomSegmentDual <- ggplot2::ggproto(
   "GeomSegmentDual", ggplot2::Geom,
   required_aes = c("x", "y", "xend", "yend"),
-  non_missing_aes = c("linetype", "linewidth", "colour1"),
+  non_missing_aes = c("linetype", "linewidth", "colour"),
 
   default_aes = ggplot2::aes(
-    colour1 = adjust_contrast_pair("#303030")$dark,
+    colour = ggplot2::from_theme(colour),
     colour2 = adjust_contrast_pair("#303030")$light,
     linewidth = ggplot2::from_theme(linewidth),
     linetype = ggplot2::from_theme(linetype),
@@ -50,7 +50,7 @@ GeomSegmentDual <- ggplot2::ggproto(
 
   draw_panel = function(self, data, panel_params, coord,
                         lineend = "butt", arrow = NULL, arrow.fill = NULL) {
-#browser()
+browser()
     coords <- coord$transform(data, panel_params)
 
     #vp_width_in <- convertWidth(unit(1, "npc"), "in", valueOnly = TRUE)
@@ -65,7 +65,7 @@ GeomSegmentDual <- ggplot2::ggproto(
       two_colour_segment_grob(
         x0 = row$x, y0 = row$y,
         x1 = row$xend, y1 = row$yend,
-        col1 = alpha(row$colour1, row$alpha),
+        col1 = alpha(row$colour, row$alpha),
         col2 = alpha(row$colour2, row$alpha),
         lwd = lwd,
         lineend = lineend,
