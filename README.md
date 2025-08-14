@@ -145,7 +145,7 @@ ggplot() +
   geom_segment_dual(
     data = wind_df,
     aes(x = x, y = y, xend = xend, yend = yend),
-#    colour1 = "#FFFFFF", colour2 = "#111111",
+    colour = "#FFFFFF", colour2 = "#111111",
     linewidth = 1.2,
     arrow = arrow(length = unit(0.15, "inches"), type = "open"),
     alpha = 0.9
@@ -162,8 +162,6 @@ ggplot() +
     x = "Longitude",
     y = "Latitude"
   )
-#> Warning in geom_segment_dual(data = wind_df, aes(x = x, y = y, xend = xend, :
-#> Ignoring empty aesthetics: `colour1` and `colour2`.
 ```
 
 <img src="man/figures/README-example2-1.png" width="100%" />
@@ -202,9 +200,8 @@ ggplot(df, aes(x = displ, y = hwy)) +
     x = "Displacement (L)",
     y = "Highway MPG"
   )
-#> Warning: Duplicated aesthetics after name standardisation: colour1 and colour2
 #> Warning in geom_segment_dual(data = reg_segment, mapping = aes(x = x, y = y, :
-#> Ignoring empty aesthetics: `colour1` and `colour2`.
+#> Ignoring unknown parameters: `colour1`
 ```
 
 <img src="man/figures/README-example3-1.png" width="100%" />
@@ -227,7 +224,7 @@ storm_subset <- storms %>%
 ggplot(storm_subset) +
   geom_segment_dual(
     aes(x = x, y = y, xend = xend, yend = yend, group = 1),
-    color1 = "white", color2 = "black",
+    color = "#FFFFFF", color2 = "#000000",
     linewidth = 1.2,
     arrow = arrow(length = unit(0.08, "inches"), type = "open")
   ) +
@@ -240,9 +237,6 @@ ggplot(storm_subset) +
     x = "Longitude", y = "Latitude"
   ) +
   theme_dark()
-#> Warning: Duplicated aesthetics after name standardisation: colour1 and colour2
-#> Warning in geom_segment_dual(aes(x = x, y = y, xend = xend, yend = yend, :
-#> Ignoring empty aesthetics: `colour1` and `colour2`.
 ```
 
 <img src="man/figures/README-example4-1.png" width="100%" />
@@ -261,11 +255,8 @@ dframe |>
   ggplot(aes(x = x, xend=xmax, y = y, yend=ymax)) + 
   geom_point(size = 5) + 
   geom_point(aes(x = xmax, y = ymax), size = 5) +
-  geom_segment(aes(group = group), linewidth = 20, alpha = 0.5) +
-  geom_segment_dual(aes(group = group, color1 = factor(group)), linewidth = 20, alpha = 0.5) +
+  geom_segment_dual(aes(group = group, colour = factor(group)), linewidth = 20, alpha = 0.5) +
   theme_bw() + theme(aspect.ratio = 1/3) #+ 
-#> Warning in geom_segment_dual(aes(group = group, color1 = factor(group)), :
-#> Ignoring empty aesthetics: `colour1` and `colour2`.
 ```
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
