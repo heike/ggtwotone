@@ -37,6 +37,8 @@ two_colour_segment_grob <- function(x0, y0, x1, y1, col1, col2, lwd, lineend, ar
 GeomSegmentDual <- ggplot2::ggproto(
   "GeomSegmentDual", ggplot2::Geom,
   required_aes = c("x", "y", "xend", "yend"),
+  non_missing_aes = c("linetype", "linewidth", "colour1"),
+
   default_aes = ggplot2::aes(
     colour1 = adjust_contrast_pair("#303030")$dark,
     colour2 = adjust_contrast_pair("#303030")$light,
@@ -46,9 +48,9 @@ GeomSegmentDual <- ggplot2::ggproto(
   ),
   draw_key = ggplot2::draw_key_path,
 
-  draw_panel = function(data, panel_params, coord,
+  draw_panel = function(self, data, panel_params, coord,
                         lineend = "butt", arrow = NULL, arrow.fill = NULL) {
-
+#browser()
     coords <- coord$transform(data, panel_params)
 
     #vp_width_in <- convertWidth(unit(1, "npc"), "in", valueOnly = TRUE)
@@ -159,20 +161,21 @@ GeomSegmentDual <- ggplot2::ggproto(
 #' @export
 geom_segment_dual <- function(mapping = NULL, data = NULL,
                               stat = "identity", position = "identity",
-                              colour1 = NULL, colour2 = NULL, linewidth = NULL,
+                            #  colour1 = NULL, colour2 = NULL,
+                            linewidth = NULL,
                               lineend = "butt", aspect_ratio = 1,
                               ..., arrow = NULL, arrow.fill = NULL,
                               na.rm = FALSE, show.legend = NA, inherit.aes = TRUE) {
   layer(
-    geom = GeomSegmentDual, mapping = mapping, data = data, stat = stat,
+    geom = "segment_dual", mapping = mapping, data = data, stat = stat,
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
     params = list(
       arrow = arrow,
       arrow.fill = arrow.fill,
       lineend = lineend,
       linewidth = linewidth,
-      colour1 = colour1,
-      colour2 = colour2,
+   #   colour1 = colour1,
+   #    colour2 = colour2,
       na.rm = na.rm,
       ...
     )
