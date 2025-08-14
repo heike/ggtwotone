@@ -9,8 +9,6 @@ geom_segment_dual(
   data = NULL,
   stat = "identity",
   position = "identity",
-  colour1 = NULL,
-  colour2 = NULL,
   linewidth = NULL,
   lineend = "butt",
   aspect_ratio = 1,
@@ -69,10 +67,6 @@ to use \code{position_jitter()}, give the position as \code{"jitter"}.
 \link[ggplot2:layer_positions]{layer position} documentation.
 }}
 
-\item{colour1}{colour for the top (upward-shifted) stroke.}
-
-\item{colour2}{colour for the bottom (downward-shifted) stroke.}
-
 \item{linewidth}{Width of each line stroke (in mm).}
 
 \item{lineend}{Line end style (round, butt, square).}
@@ -127,6 +121,10 @@ but unobserved levels are omitted.}
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link[ggplot2:annotation_borders]{annotation_borders()}}.}
+
+\item{colour1}{colour for the top (upward-shifted) stroke.}
+
+\item{colour2}{colour for the bottom (downward-shifted) stroke.}
 }
 \description{
 Draws two vertically offset line segments with separate colours,
