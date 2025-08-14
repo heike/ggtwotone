@@ -46,11 +46,33 @@ GeomSegmentDual <- ggplot2::ggproto(
     linetype = ggplot2::from_theme(linetype),
     alpha = NA
   ),
-  draw_key = ggplot2::draw_key_path,
+  draw_key = function (data, params, size) {
+    if (is.null(data$linetype)) {
+      data$linetype <- 0
+    }
+
+    pair <- adjust_contrast_pair(data$colour)
+    grob <- two_colour_segment_grob(0.1, 0.5, 0.9, 0.5,
+                col1 = alpha(pair$dark %||% data$fill %||% "black", data$alpha),
+                col2 = alpha(pair$light %||% data$fill %||% "black", data$alpha),
+             #   fill = alpha(params$arrow.fill %||% pair$dark %||% data$fill %||% "black", data$alpha),
+                arrow.fill = params$arrow.fill,
+                lwd = .pt*(data$linewidth %||% 0.5),
+            #    lty = data$linetype %||% 1,
+                lineend = params$lineend %||% "butt",
+              arrow = params[["arrow"]])
+    if (!is.null(params[["arrow"]])) {
+      angle <- deg2rad(params[["arrow"]]$angle)
+      length <- convertUnit(params[["arrow"]]$length, "cm",
+                            valueOnly = TRUE)
+      attr(grob, "width") <- cos(angle) * length * 1.25
+      attr(grob, "height") <- sin(angle) * length * 2
+    }
+    grob
+  },
 
   draw_panel = function(self, data, panel_params, coord,
                         lineend = "butt", arrow = NULL, arrow.fill = NULL) {
-browser()
     coords <- coord$transform(data, panel_params)
 
     #vp_width_in <- convertWidth(unit(1, "npc"), "in", valueOnly = TRUE)
@@ -61,12 +83,13 @@ browser()
       row <- coords[i, , drop = FALSE]
       # Convert linewidth to lwd (pt) for grid
       lwd <- row$linewidth * .pt
+      pair <- adjust_contrast_pair(row$colour)
 
       two_colour_segment_grob(
         x0 = row$x, y0 = row$y,
         x1 = row$xend, y1 = row$yend,
-        col1 = alpha(row$colour, row$alpha),
-        col2 = alpha(row$colour2, row$alpha),
+        col1 = alpha(pair$dark, row$alpha),
+        col2 = alpha(pair$light, row$alpha),
         lwd = lwd,
         lineend = lineend,
         arrow = arrow,
