@@ -88,8 +88,8 @@ adjust_contrast_pair <- function(color, contrast = 4.5, method = "auto",
 
   for (m in contrast_methods) {
     contrasts <- sapply(candidates, get_contrast, bg = background, method = m)
-    best_light <- candidates[which.max(contrasts)]
-    best_dark <- candidates[which.min(contrasts)]
+    best_light <- candidates[which.min(contrasts)] # bg is light by default
+    best_dark <- candidates[which.max(contrasts)]
     max_contrast <- max(contrasts, na.rm = TRUE)
 
     if (!is.na(max_contrast) && max_contrast >= contrast) {
